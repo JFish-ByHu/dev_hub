@@ -1,0 +1,360 @@
+@use "../../styles/mixins" as *;
+
+.home-page {
+  display: flex;
+  flex-direction: column;
+  gap: 100px;
+  padding: 40px 0 100px 0;
+}
+
+/* ==================================================== */
+/* 1. Hero Section                                      */
+/* ==================================================== */
+.hero-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+
+  .hero-left {
+    flex: 1;
+    max-width: 500px;
+  }
+
+  .hero-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    line-height: 1.1;
+    color: theme-var(text);
+    margin-bottom: 24px;
+    letter-spacing: -0.02em;
+
+    .highlight-colors {
+      color: theme-var(primary);
+    }
+
+    .highlight-fonts {
+      color: transparent;
+      -webkit-text-stroke: 1px theme-var(text-secondary);
+      font-style: italic;
+    }
+  }
+
+  .hero-subtitle {
+    font-size: 1.125rem;
+    color: theme-var(text-secondary);
+    margin-bottom: 32px;
+    line-height: 1.6;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 16px;
+
+    .btn-secondary {
+      background-color: theme-var(secondary);
+      color: theme-var(primary);
+      border: none;
+      font-weight: 600;
+
+      &:hover {
+        background-color: theme-var(muted);
+        color: theme-var(primary);
+      }
+    }
+  }
+
+  .hero-right {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  // Abstract Art CSS Blocks
+  .abstract-art {
+    display: grid;
+    grid-template-columns: 100px 200px 100px;
+    grid-template-rows: 60px 160px 80px;
+    gap: 12px;
+    position: relative;
+
+    .box {
+      border-radius: $radius-lg;
+    }
+
+    .primary-box {
+      background-color: theme-var(primary);
+      grid-column: 2 / 3;
+      grid-row: 1 / 3;
+    }
+
+    .secondary-box {
+      background-color: theme-var(secondary);
+      grid-column: 1 / 2;
+      grid-row: 2 / 4;
+      height: 140px;
+      align-self: center;
+    }
+
+    .text-box {
+      background-color: theme-var(text);
+      grid-column: 2 / 3;
+      grid-row: 3 / 4;
+    }
+
+    .accent-box {
+      background-color: theme-var(error);
+      grid-column: 3 / 4;
+      grid-row: 2 / 3;
+      height: 120px;
+      align-self: end;
+    }
+
+    .surface-box {
+      background-color: theme-var(surface);
+      border: 1px solid theme-var(border);
+      grid-column: 3 / 4;
+      grid-row: 3 / 4;
+    }
+
+    .highlight-box {
+      background-color: theme-var(secondary);
+      grid-column: 1 / 2;
+      grid-row: 1 / 2;
+      height: 48px;
+      align-self: end;
+      justify-self: end;
+      width: 80px;
+    }
+  }
+}
+
+/* ==================================================== */
+/* 2. Features Section                                  */
+/* ==================================================== */
+.features-section {
+  text-align: center;
+
+  .section-title {
+    font-size: 2.25rem;
+    font-weight: 800;
+    margin-bottom: 48px;
+    color: theme-var(text);
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .feature-card {
+    background-color: theme-var(surface);
+    border: 1px solid theme-var(border);
+    border-radius: $radius-lg;
+    padding: 40px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .feature-icon {
+      font-size: 32px;
+      margin-bottom: 24px;
+      width: 64px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: theme-var(muted);
+      border-radius: 50%;
+    }
+
+    .feature-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: theme-var(text);
+
+      span {
+        position: relative;
+        z-index: 1;
+
+        &::after {
+          content: "";
+          position: absolute;
+          left: 0;
+          bottom: 2px;
+          height: 6px;
+          width: 100%;
+          background-color: theme-var(secondary);
+          z-index: -1;
+          border-radius: 3px;
+        }
+      }
+    }
+
+    .feature-desc {
+      color: theme-var(text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+  }
+}
+
+/* ==================================================== */
+/* 3. Banners Section                                   */
+/* ==================================================== */
+.banners-section {
+  .banner-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: 240px 160px;
+    gap: 16px;
+  }
+
+  .banner-large,
+  .banner-square,
+  .banner-rect {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-radius: $radius-lg;
+    color: #fff;
+    padding: 24px;
+
+    h2 {
+      margin: 0;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    p {
+      margin: 8px 0 0 0;
+      opacity: 0.9;
+    }
+
+    a {
+      color: #fff;
+      text-decoration: underline;
+      margin-top: 8px;
+      opacity: 0.8;
+      font-size: 0.9rem;
+    }
+  }
+
+  .banner-large {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+    background-color: theme-var(primary);
+
+    h2 {
+      font-size: 3.5rem;
+    }
+    p {
+      font-size: 1.1rem;
+    }
+  }
+
+  .banner-square {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+    background-color: theme-var(
+      error
+    ); // Using error/red from our themes to match image's right pinkish concept
+
+    h2 {
+      font-size: 2.25rem;
+    }
+    p {
+      font-size: 1.1rem;
+    }
+  }
+
+  .banner-rect {
+    h2 {
+      font-size: 1.5rem;
+    }
+  }
+
+  .dark-bg {
+    background-color: theme-var(text); // Almost black
+    color: theme-var(surface);
+    h2,
+    a {
+      color: theme-var(surface);
+    }
+  }
+
+  .error-bg {
+    background-color: theme-var(error);
+  }
+}
+
+/* ==================================================== */
+/* 4. Steps Section                                     */
+/* ==================================================== */
+.steps-section {
+  background-color: theme-var(secondary);
+  border-radius: $radius-lg;
+  padding: 64px 48px;
+  display: flex;
+  gap: 64px;
+
+  .steps-left {
+    flex: 1;
+
+    h2 {
+      font-size: 2.25rem;
+      font-weight: 800;
+      color: theme-var(text);
+      margin: 0 0 16px 0;
+    }
+
+    p {
+      color: theme-var(text-secondary);
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+  }
+
+  .steps-right {
+    flex: 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+
+    .step-item {
+      display: flex;
+      gap: 16px;
+
+      .step-num {
+        font-size: 1.5rem;
+        font-weight: 800;
+      }
+
+      .highlight-1 {
+        color: theme-var(error);
+      }
+      .highlight-2 {
+        color: theme-var(primary);
+      }
+      .highlight-3 {
+        color: theme-var(error);
+      }
+      .highlight-4 {
+        color: theme-var(error);
+      }
+
+      p {
+        margin: 0;
+        margin-top: 4px;
+        color: theme-var(text-secondary);
+        font-size: 0.95rem;
+        line-height: 1.6;
+      }
+    }
+  }
+}

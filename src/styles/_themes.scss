@@ -1,0 +1,37 @@
+// ========== 全局主题配色基调 ==========
+// 通过 CSS 自定义属性输出，支持 light / dark 切换
+
+$themes: (
+  light: (
+    text: #050316,
+    background: #fbfbfe,
+    primary: #2f27ce,
+    secondary: #dddbff,
+    accent: #443dff,
+    // ---------- 语义衍生色（基于主色调自动/手动派生） ----------
+    text-secondary: #6b6878,
+    border: #e4e2f0,
+    surface: #ffffff,
+    muted: #f5f4fa,
+    success: #16a34a,
+    warning: #d97706,
+    error: #dc2626,
+    info: #2563eb
+  ),
+  dark: (
+    text: #eae9fc,
+    background: #010104,
+    primary: #3a31d8,
+    secondary: #020024,
+    accent: #0600c2,
+    // ---------- 语义衍生色 ----------
+    text-secondary: #9d9ab8,
+    border: #262438,
+    surface: #12121a,
+    muted: #1a1a28,
+    success: #22c55e,
+    warning: #f59e0b,
+    error: #ef4444,
+    info: #3b82f6
+  )
+) !default;

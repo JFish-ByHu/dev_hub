@@ -1,0 +1,19 @@
+@use "themes" as *;
+
+// ---------- 将主题 map 输出为 CSS 自定义属性 ----------
+@mixin theme-vars($theme-map) {
+  @each $key, $value in $theme-map {
+    --#{$key}: #{$value};
+  }
+}
+
+// ---------- 快捷访问主题变量的私有函数 ----------
+@function theme-var($name) {
+  @return var(--#{$name});
+}
+
+// ---------- 圆角阶梯 ----------
+$radius-xs: 4px;
+$radius-sm: 6px;
+$radius-md: 8px;
+$radius-lg: 10px;

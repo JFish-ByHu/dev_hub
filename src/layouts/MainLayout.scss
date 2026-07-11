@@ -1,0 +1,147 @@
+@use "../styles/mixins" as *;
+
+.main-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-header {
+  background-color: theme-var(surface);
+  border-bottom: 1px solid theme-var(border);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  .header-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+  }
+
+  .logo {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: theme-var(text);
+    cursor: pointer;
+    margin-right: 32px;
+  }
+
+  .nav-menu {
+    flex: 1;
+
+    .custom-menu {
+      border-bottom: none;
+      background: transparent;
+
+      // 菜单项高度对齐
+      .ant-menu-item,
+      .ant-menu-submenu-title {
+        height: 60px;
+        display: flex;
+        align-items: center;
+        color: theme-var(text);
+
+        &:hover {
+          color: theme-var(primary);
+        }
+      }
+
+      .ant-menu-item-selected {
+        color: theme-var(primary);
+        font-weight: 500;
+      }
+    }
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+
+    .theme-toggle {
+      background: none;
+      border: 1px solid theme-var(border);
+      padding: 6px 12px;
+      border-radius: $radius-sm;
+      color: theme-var(text-secondary);
+      cursor: pointer;
+      transition: all 0.2s;
+
+      &:hover {
+        background-color: theme-var(muted);
+        color: theme-var(text);
+      }
+    }
+  }
+}
+
+.main-content {
+  flex: 1;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 24px;
+}
+
+/* ==================================================== */
+/* Mega Menu 弹出层样式 (popupRender 覆盖的内容)           */
+/* ==================================================== */
+.mega-menu-popup {
+  background-color: theme-var(surface);
+  border: 1px solid theme-var(border);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-radius: $radius-md;
+  padding: 20px;
+  min-width: 480px;
+
+  .mega-menu-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  .mega-menu-item {
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-radius: $radius-sm;
+    padding: 12px;
+    transition: background-color 0.2s;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    line-height: normal;
+
+    &:hover {
+      background-color: theme-var(muted);
+    }
+
+    &.active {
+      background-color: theme-var(muted);
+      border: 1px solid theme-var(border);
+
+      .mega-menu-title {
+        color: theme-var(primary);
+      }
+    }
+  }
+
+  .mega-menu-title {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: theme-var(text);
+    line-height: 1.4;
+  }
+
+  .mega-menu-desc {
+    margin: 0;
+    font-size: 13px;
+    color: theme-var(text-secondary);
+    line-height: 1.4;
+    white-space: normal;
+  }
+}

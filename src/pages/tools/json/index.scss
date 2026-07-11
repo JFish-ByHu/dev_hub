@@ -1,0 +1,192 @@
+@use "../../../styles/mixins" as *;
+
+.json-tool-page {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 120px); // 适配页面剩余高度
+}
+
+.tool-header {
+  margin-bottom: 24px;
+
+  .tool-title {
+    margin: 0 0 8px 0;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: theme-var(text);
+  }
+
+  .tool-desc {
+    margin: 0;
+    color: theme-var(text-secondary);
+    font-size: 1rem;
+  }
+}
+
+.json-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr; // 一半给输入，一半给树
+  gap: 24px;
+  flex: 1;
+  min-height: 0; // 为了能够内部滚动
+}
+
+.json-card {
+  display: flex;
+  flex-direction: column;
+  background-color: theme-var(surface) !important;
+  border-radius: $radius-lg !important;
+
+  .ant-card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    overflow: hidden;
+  }
+}
+
+// ------------------------------
+// 左侧：文本域样式
+// ------------------------------
+.textarea-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+
+  .drag-overlay {
+    position: absolute;
+    inset: 0;
+    background-color: theme-var(muted);
+    color: theme-var(primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    font-weight: 600;
+    border: 2px dashed theme-var(primary);
+    border-radius: $radius-sm;
+    z-index: 10;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+  }
+
+  &.dragging .drag-overlay {
+    opacity: 1;
+  }
+}
+
+.json-textarea {
+  flex: 1;
+  resize: none !important;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  background-color: theme-var(background) !important;
+  color: theme-var(text) !important;
+  border-radius: $radius-sm;
+
+  &::placeholder {
+    color: theme-var(text-secondary);
+  }
+}
+
+// ------------------------------
+// 右侧：树视图 & 路径提取
+// ------------------------------
+.path-extractor {
+  background-color: theme-var(muted);
+  padding: 12px 16px;
+  border-radius: $radius-sm;
+
+  .path-code {
+    margin-top: 8px !important;
+    margin-bottom: 0 !important;
+    font-family: monospace;
+    font-size: 14px;
+    color: theme-var(primary);
+    background-color: theme-var(background);
+    padding: 6px 10px;
+    border-radius: $radius-xs;
+    border: 1px solid theme-var(border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &.empty {
+      color: theme-var(text-secondary);
+      font-style: italic;
+    }
+  }
+}
+
+.json-tree-container {
+  flex: 1;
+  overflow: auto;
+  border: 1px solid theme-var(border);
+  border-radius: $radius-sm;
+  background-color: theme-var(background);
+  padding: 16px;
+
+  .empty-placeholder {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: theme-var(text-secondary);
+    font-style: italic;
+  }
+}
+
+/* ==================================================== */
+/* 自定义 AntD Tree 的 JSON 语法高亮                       */
+/* ==================================================== */
+.custom-json-tree {
+  background: transparent !important;
+  color: theme-var(text) !important;
+
+  .ant-tree-node-content-wrapper {
+    &:hover {
+      background-color: theme-var(muted) !important;
+    }
+  }
+
+  .ant-tree-node-selected {
+    background-color: theme-var(secondary) !important;
+    box-shadow: inset 0 0 0 1px theme-var(primary);
+  }
+
+  .json-tree-node {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+    font-size: 14px;
+  }
+
+  .json-key {
+    color: theme-var(primary); // 键使用主色
+    font-weight: 500;
+  }
+
+  .json-meta {
+    color: theme-var(text-secondary);
+    font-style: italic;
+    font-size: 12px;
+  }
+
+  // 基础类型高亮系统对应全局色板
+  .json-val-string {
+    color: theme-var(success); // 字符串用绿色
+  }
+  .json-val-number {
+    color: theme-var(warning); // 数字用黄色
+  }
+  .json-val-boolean {
+    color: theme-var(error); // 布尔用红色
+  }
+  .json-val-null {
+    color: theme-var(text-secondary);
+    font-weight: bold;
+  }
+}
