@@ -13,7 +13,7 @@ export default function JsonTool() {
       <div className="tool-header">
         <h1 className="tool-title">JSON Formatter & Validator</h1>
         <p className="tool-desc">
-          Easily format, compress, and validate your JSON data. Extract specific element paths
+          Easily format, compress, and validate your JSON data! Extract specific element paths
           instantly using the Interactive Tree.
         </p>
       </div>
