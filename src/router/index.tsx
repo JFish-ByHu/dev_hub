@@ -1,9 +1,9 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom"
+import { RouterProvider, createHashRouter } from "react-router-dom"
 import MainLayout from "../layouts/MainLayout"
 import HomePage from "../pages/home/HomePage"
 import JsonTool from "../pages/tools/json/index"
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: "/",
     element: <MainLayout />,
