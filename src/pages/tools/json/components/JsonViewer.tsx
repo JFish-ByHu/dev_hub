@@ -1,49 +1,59 @@
-import { useState, useMemo } from "react"
-import { Tree, Typography, Alert, Card, Divider } from "antd"
-import type { TreeProps } from "antd/es/tree"
-import { CopyOutlined, CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons"
+import { useMemo, useState } from "react"
+import type { Key } from "react"
+import { Alert, Button, Card, Divider, Space, Tree, Typography } from "antd"
+import type { DataNode, TreeProps } from "antd/es/tree"
+import {
+  CheckCircleOutlined,
+  CloseCircleOutlined,
+  CompressOutlined,
+  CopyOutlined,
+  ExpandOutlined
+} from "@ant-design/icons"
 import { buildTree } from "../utils/treeBuilder"
+import { collectExpandableKeys, toJsonPath } from "../utils/json"
 
 const { Text, Paragraph } = Typography
 
 interface JsonViewerProps {
   inputVal: string
-  parsedData: unknown
+  parsedData: unknown | undefined
   error: string | null
 }
 
-export default function JsonViewer({ inputVal, parsedData, error }: JsonViewerProps) {
-  const [selectedPath, setSelectedPath] = useState<string>("")
+function containsTreeKey(nodes: DataNode[], key: Key): boolean {
+  return nodes.some(
+    (node) => node.key === key || (node.children ? containsTreeKey(node.children, key) : false)
+  )
+}
 
-  const treeData = useMemo(() => {
-    if (parsedData !== null) {
-      // 如果是最外层的对象或数组
-      if (typeof parsedData === "object") {
-        return [buildTree(parsedData)]
-      }
-      // 对于纯字面量（极少但在合法 JSON 中允许），直接展示
-      return [
-        {
-          key: "root",
-          title: String(parsedData), // fallback
-          isLeaf: true
-        }
-      ]
-    }
-    return []
+export default function JsonViewer({ inputVal, parsedData, error }: JsonViewerProps) {
+  const [selectedKey, setSelectedKey] = useState<Key | null>(null)
+  const [expandedKeys, setExpandedKeys] = useState<Key[]>(["root"])
+
+  const treeData = useMemo<DataNode[]>(() => {
+    if (parsedData === undefined) return []
+    return [buildTree(parsedData)]
   }, [parsedData])
 
-  // 选择节点，提取路径
+  const expandableKeys = useMemo(() => collectExpandableKeys(treeData), [treeData])
+
+  const selectedPath = useMemo(() => {
+    if (selectedKey === null) return ""
+    const keyExists = containsTreeKey(treeData, selectedKey)
+    return keyExists ? toJsonPath(String(selectedKey)) : ""
+  }, [selectedKey, treeData])
+
+  const visibleExpandedKeys = useMemo(
+    () => expandedKeys.filter((key) => expandableKeys.includes(key) || key === "root"),
+    [expandableKeys, expandedKeys]
+  )
+
   const handleSelect: TreeProps["onSelect"] = (selectedKeys) => {
-    if (selectedKeys.length > 0) {
-      const path = String(selectedKeys[0]).replace(/^root\.?/, "") // 剔除根节点前缀
-      setSelectedPath(path || "root")
-    }
+    setSelectedKey(selectedKeys.length > 0 ? selectedKeys[0] : null)
   }
 
   return (
     <Card title="Interactive Tree View" className="json-card" bordered={false}>
-      {/* 状态检测栏 */}
       <div className="status-bar" style={{ marginBottom: 16 }}>
         {inputVal.trim() === "" ? (
           <Alert message="Awaiting Input" type="info" showIcon />
@@ -60,10 +70,29 @@ export default function JsonViewer({ inputVal, parsedData, error }: JsonViewerPr
         )}
       </div>
 
-      {/* 路径提取工具栏 */}
-      {parsedData !== null && (
+      {parsedData !== undefined && (
         <div className="path-extractor" style={{ marginBottom: 16 }}>
-          <Text type="secondary">Selected Node Path:</Text>
+          <div className="path-toolbar">
+            <Text type="secondary">Selected Node Path:</Text>
+            <Space size="small">
+              <Button
+                size="small"
+                icon={<ExpandOutlined />}
+                onClick={() => setExpandedKeys(expandableKeys)}
+                disabled={!expandableKeys.length}
+              >
+                Expand all
+              </Button>
+              <Button
+                size="small"
+                icon={<CompressOutlined />}
+                onClick={() => setExpandedKeys([])}
+                disabled={!expandableKeys.length}
+              >
+                Collapse all
+              </Button>
+            </Space>
+          </div>
           {selectedPath ? (
             <Paragraph
               copyable={{
@@ -75,20 +104,20 @@ export default function JsonViewer({ inputVal, parsedData, error }: JsonViewerPr
               {selectedPath}
             </Paragraph>
           ) : (
-            <div className="path-code empty">Click a node to extract its path...</div>
+            <div className="path-code empty">Click a node to extract its JSONPath...</div>
           )}
         </div>
       )}
 
       <Divider style={{ margin: "16px 0" }} />
 
-      {/* 树视图区域 */}
       <div className="json-tree-container">
-        {parsedData !== null ? (
+        {parsedData !== undefined ? (
           <Tree
             showLine
             treeData={treeData}
-            defaultExpandedKeys={["root"]}
+            expandedKeys={visibleExpandedKeys}
+            onExpand={(keys) => setExpandedKeys(keys)}
             onSelect={handleSelect}
             className="custom-json-tree"
           />

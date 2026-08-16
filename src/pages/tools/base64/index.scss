@@ -1,0 +1,283 @@
+@use "../../../styles/mixins" as *;
+
+.base64-tool-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-bottom: 40px;
+
+  .tool-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 0;
+  }
+
+  .tool-title {
+    margin-bottom: 8px;
+  }
+}
+
+.base64-options-card,
+.base64-card,
+.base64-guide-card {
+  background-color: theme-var(surface) !important;
+  border: 1px solid theme-var(border);
+  border-radius: $radius-lg !important;
+}
+
+.base64-options-card {
+  display: grid;
+  grid-template-columns: minmax(180px, 0.8fr) minmax(220px, 1fr) minmax(260px, 1.2fr);
+  align-items: end;
+  gap: 24px;
+  padding: 20px 24px;
+
+  .ant-typography {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 12px;
+  }
+}
+
+.mode-control,
+.option-control,
+.padding-control {
+  min-width: 0;
+}
+
+.padding-control {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  align-items: center;
+  gap: 8px 12px;
+
+  > .ant-typography:first-child {
+    grid-column: 1 / -1;
+    margin-bottom: 0;
+  }
+
+  .option-hint {
+    margin: 0;
+    font-size: 12px;
+  }
+
+  .ant-switch {
+    justify-self: start;
+  }
+}
+
+.full-width {
+  width: 100%;
+}
+
+.base64-converter-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.base64-card {
+  .ant-card-head {
+    border-bottom-color: theme-var(border);
+  }
+
+  .ant-card-head-title {
+    color: theme-var(text);
+  }
+
+  .ant-card-body {
+    display: flex;
+    flex-direction: column;
+    min-height: 540px;
+    padding: 24px;
+  }
+}
+
+.loaded-file {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding: 8px 12px;
+  color: theme-var(primary);
+  background: theme-var(muted);
+  border-radius: $radius-sm;
+
+  .ant-typography {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .ant-btn {
+    padding: 0;
+  }
+}
+
+.base64-textarea-wrapper {
+  position: relative;
+  flex: 1;
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  .drag-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    color: theme-var(primary);
+    background: theme-var(muted);
+    border: 2px dashed theme-var(primary);
+    border-radius: $radius-sm;
+    font-size: 16px;
+    font-weight: 600;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+  }
+
+  &.dragging .drag-overlay {
+    opacity: 1;
+  }
+}
+
+.base64-textarea {
+  flex: 1;
+  resize: none !important;
+  min-height: 280px;
+  color: theme-var(text) !important;
+  background: theme-var(background) !important;
+  border-radius: $radius-sm;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-size: 14px;
+  line-height: 1.55;
+
+  &::placeholder {
+    color: theme-var(text-secondary);
+  }
+}
+
+.result-textarea {
+  min-height: 280px;
+}
+
+.input-actions,
+.result-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.input-hint {
+  margin-top: 12px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.result-actions {
+  .ant-typography {
+    font-size: 12px;
+  }
+}
+
+.base64-guide-card {
+  .ant-card-body {
+    padding: 24px;
+  }
+}
+
+.guide-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+
+  h2 {
+    margin: 4px 0 0;
+    color: theme-var(text);
+    font-size: 1.15rem;
+  }
+
+  > .ant-typography {
+    max-width: 560px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+}
+
+.eyebrow {
+  color: theme-var(primary) !important;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.base64-guide-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  margin-top: 24px;
+
+  > div {
+    padding: 16px;
+    background: theme-var(muted);
+    border-radius: $radius-md;
+  }
+
+  .ant-typography {
+    color: theme-var(text);
+  }
+
+  p {
+    margin: 8px 0 0;
+    color: theme-var(text-secondary) !important;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+}
+
+@media (max-width: 900px) {
+  .base64-options-card {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .padding-control {
+    grid-column: 1 / -1;
+  }
+
+  .base64-converter-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .base64-guide-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .base64-tool-page {
+    .tool-header,
+    .guide-heading {
+      flex-direction: column;
+    }
+  }
+
+  .base64-options-card,
+  .base64-guide-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .padding-control {
+    grid-column: auto;
+  }
+}

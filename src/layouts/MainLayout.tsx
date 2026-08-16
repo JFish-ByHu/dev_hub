@@ -40,6 +40,15 @@ const MainLayout: React.FC = () => {
     }
   }
 
+  const selectedMenuKey =
+    location.pathname === "/"
+      ? "/"
+      : location.pathname.startsWith("/tools")
+        ? "/tools"
+        : location.pathname.startsWith("/resources")
+          ? "/resources"
+          : ""
+
   // 自定义 SubMenu 的弹出层
   const popupRender = () => {
     return (
@@ -72,7 +81,7 @@ const MainLayout: React.FC = () => {
           </div>
           <div className="nav-menu">
             <Menu
-              selectedKeys={[location.pathname]}
+              selectedKeys={selectedMenuKey ? [selectedMenuKey] : []}
               mode="horizontal"
               items={menuItems}
               popupRender={popupRender}

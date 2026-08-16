@@ -1,142 +1,103 @@
-import React, { useState } from "react"
-import { Input, Button, Space, message, Card, Upload } from "antd"
-import { UploadOutlined } from "@ant-design/icons"
+import { useState } from "react"
+import type { DragEvent } from "react"
+import { Button, Card, Space, Typography, Upload, Input } from "antd"
+import {
+  BulbOutlined,
+  ClearOutlined,
+  DownloadOutlined,
+  FormatPainterOutlined,
+  UploadOutlined
+} from "@ant-design/icons"
+import CopyButton from "../../../../components/CopyButton"
 
 const { TextArea } = Input
+const { Text } = Typography
+
+interface JsonStats {
+  characters: number
+  bytes: number
+  lines: number
+}
 
 interface JsonEditorProps {
   inputVal: string
-  setInputVal: (val: string) => void
-  parsedData: unknown
-  setParsedData: (data: unknown) => void
-  setError: (err: string | null) => void
+  isValid: boolean
+  stats: JsonStats
+  onInputChange: (value: string) => void
+  onFormat: () => void
+  onMinify: () => void
+  copyValue: string
+  onDownload: () => void
+  onLoadExample: () => void
+  onClear: () => void
+  onFile: (file: File) => Promise<void>
 }
 
 export default function JsonEditor({
   inputVal,
-  setInputVal,
-  parsedData,
-  setParsedData,
-  setError
+  isValid,
+  stats,
+  onInputChange,
+  onFormat,
+  onMinify,
+  copyValue,
+  onDownload,
+  onLoadExample,
+  onClear,
+  onFile
 }: JsonEditorProps) {
   const [isDragging, setIsDragging] = useState(false)
 
-  // 1. 处理输入和校验
-  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const val = e.target.value
-    setInputVal(val)
-
-    if (!val.trim()) {
-      setParsedData(null)
-      setError(null)
-      return
-    }
-
-    try {
-      const data = JSON.parse(val)
-      setParsedData(data)
-      setError(null)
-    } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : "Invalid JSON format")
-      setParsedData(null)
-    }
-  }
-
-  // 2. 格式化 & 压缩
-  const formatJson = () => {
-    if (parsedData !== null) {
-      setInputVal(JSON.stringify(parsedData, null, 2))
-      message.success("JSON formatted successfully")
-    }
-  }
-
-  const minifyJson = () => {
-    if (parsedData !== null) {
-      setInputVal(JSON.stringify(parsedData))
-      message.success("JSON minified successfully")
-    }
-  }
-
-  const clearJson = () => {
-    setInputVal("")
-    setParsedData(null)
-    setError(null)
-  }
-
-  // 3. 处理文件上传与拖拽
-  const processFile = (file: File) => {
-    const reader = new FileReader()
-    reader.onload = (e) => {
-      const val = e.target?.result as string
-      setInputVal(val)
-
-      if (!val.trim()) {
-        setParsedData(null)
-        setError(null)
-        return
-      }
-
-      try {
-        const data = JSON.parse(val)
-        setParsedData(data)
-        setError(null)
-        message.success("File parsed successfully")
-      } catch (err: unknown) {
-        setError(err instanceof Error ? err.message : "Invalid JSON format")
-        setParsedData(null)
-        message.error("Failed to parse file: Invalid JSON")
-      }
-    }
-    reader.readAsText(file)
-  }
-
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault()
-    setIsDragging(true)
-  }
-
-  const handleDragLeave = (e: React.DragEvent) => {
-    e.preventDefault()
+  const handleDrop = (event: DragEvent<HTMLDivElement>) => {
+    event.preventDefault()
     setIsDragging(false)
-  }
-
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault()
-    setIsDragging(false)
-    const file = e.dataTransfer.files[0]
-    if (file) {
-      processFile(file)
-    }
+    const file = event.dataTransfer.files[0]
+    if (file) void onFile(file)
   }
 
   return (
     <Card title="Raw JSON Input" className="json-card" bordered={false}>
-      <Space className="toolbar" style={{ marginBottom: 16 }}>
-        <Button type="primary" onClick={formatJson} disabled={!parsedData}>
+      <Space className="toolbar" wrap style={{ marginBottom: 16 }}>
+        <Button
+          type="primary"
+          icon={<FormatPainterOutlined />}
+          onClick={onFormat}
+          disabled={!isValid}
+        >
           Format
         </Button>
-        <Button onClick={minifyJson} disabled={!parsedData}>
+        <Button onClick={onMinify} disabled={!isValid}>
           Minify
+        </Button>
+        <CopyButton value={copyValue} disabled={!isValid} />
+        <Button icon={<DownloadOutlined />} onClick={onDownload} disabled={!isValid}>
+          Download
         </Button>
         <Upload
           beforeUpload={(file) => {
-            processFile(file)
-            return false // 阻止默认上传动作
+            void onFile(file)
+            return false
           }}
           showUploadList={false}
-          accept=".json"
+          accept=".json,application/json"
         >
           <Button icon={<UploadOutlined />}>Upload</Button>
         </Upload>
-        <Button danger onClick={clearJson} disabled={!inputVal}>
+        <Button icon={<BulbOutlined />} onClick={onLoadExample}>
+          Example
+        </Button>
+        <Button danger icon={<ClearOutlined />} onClick={onClear} disabled={!inputVal}>
           Clear
         </Button>
       </Space>
 
       <div
         className={`textarea-wrapper ${isDragging ? "dragging" : ""}`}
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
+        onDragOver={(event) => {
+          event.preventDefault()
+          setIsDragging(true)
+        }}
+        onDragLeave={() => setIsDragging(false)}
         onDrop={handleDrop}
       >
         <div className="drag-overlay">
@@ -147,9 +108,16 @@ export default function JsonEditor({
           className="json-textarea"
           placeholder="Paste your JSON string here, or drag and drop a .json file..."
           value={inputVal}
-          onChange={handleInputChange}
+          onChange={(event) => onInputChange(event.target.value)}
           spellCheck={false}
         />
+      </div>
+      <div className="json-input-stats">
+        <Text type="secondary">{stats.characters.toLocaleString()} characters</Text>
+        <Text type="secondary">{stats.bytes.toLocaleString()} bytes</Text>
+        <Text type="secondary">{stats.lines.toLocaleString()} lines</Text>
+        {!isValid && inputVal.trim() && <Text type="warning">Invalid JSON</Text>}
+        {isValid && <Text type="success">Valid JSON</Text>}
       </div>
     </Card>
   )

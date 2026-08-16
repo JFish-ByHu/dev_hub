@@ -1,7 +1,9 @@
 import { RouterProvider, createHashRouter } from "react-router-dom"
 import MainLayout from "../layouts/MainLayout"
 import HomePage from "../pages/home/HomePage"
+import Base64Tool from "../pages/tools/base64"
 import JsonTool from "../pages/tools/json/index"
+import TimestampTool from "../pages/tools/timestamp/index"
 
 const router = createHashRouter([
   {
@@ -18,6 +20,14 @@ const router = createHashRouter([
           {
             path: "json",
             element: <JsonTool />
+          },
+          {
+            path: "base64",
+            element: <Base64Tool />
+          },
+          {
+            path: "timestamp",
+            element: <TimestampTool />
           }
         ]
       },

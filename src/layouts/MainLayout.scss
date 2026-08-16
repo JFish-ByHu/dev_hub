@@ -55,6 +55,11 @@
         color: theme-var(primary);
         font-weight: 500;
       }
+
+      .ant-menu-submenu-selected > .ant-menu-submenu-title {
+        color: theme-var(primary);
+        font-weight: 500;
+      }
     }
   }
 
