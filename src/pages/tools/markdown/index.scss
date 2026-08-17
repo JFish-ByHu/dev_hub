@@ -1,0 +1,383 @@
+@use "../../../styles/mixins" as *;
+
+.markdown-tool-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-bottom: 40px;
+
+  .tool-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 0;
+  }
+
+  .tool-title {
+    margin-bottom: 8px;
+  }
+}
+
+.markdown-card,
+.markdown-guide-card {
+  background-color: theme-var(surface) !important;
+  border: 1px solid theme-var(border);
+  border-radius: $radius-lg !important;
+}
+
+.markdown-card {
+  .ant-card-head {
+    border-bottom-color: theme-var(border);
+  }
+
+  .ant-card-head-title {
+    color: theme-var(text);
+  }
+
+  .ant-card-body {
+    min-height: 560px;
+    padding: 24px;
+  }
+}
+
+.markdown-editor-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.markdown-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  margin-bottom: 16px;
+}
+
+.markdown-toolbar-group {
+  flex-wrap: wrap;
+}
+
+.markdown-toolbar-secondary {
+  margin-left: 0;
+}
+
+.markdown-sync-control {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  .ant-typography {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 600px) {
+  .markdown-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .markdown-toolbar-group,
+  .markdown-toolbar-secondary {
+    margin-left: 0;
+  }
+}
+
+.markdown-textarea {
+  min-height: 420px;
+  resize: vertical !important;
+  color: theme-var(text) !important;
+  background: theme-var(background) !important;
+  border-radius: $radius-sm;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-size: 14px;
+  line-height: 1.6;
+
+  &::placeholder {
+    color: theme-var(text-secondary);
+  }
+}
+
+.markdown-editor-dropzone {
+  position: relative;
+}
+
+.markdown-drag-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: theme-var(primary);
+  background: theme-var(muted);
+  border: 2px dashed theme-var(primary);
+  border-radius: $radius-sm;
+  font-size: 16px;
+  font-weight: 600;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+
+  svg {
+    font-size: 32px;
+  }
+}
+
+.markdown-editor-dropzone.dragging .markdown-drag-overlay {
+  opacity: 1;
+}
+
+.markdown-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin-top: 12px;
+
+  .ant-typography {
+    font-size: 12px;
+  }
+}
+
+.markdown-image-hint {
+  display: block;
+  margin-top: 10px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.markdown-preview-card {
+  .ant-card-body {
+    display: flex;
+    flex-direction: column;
+    height: min(680px, calc(100vh - 160px));
+    min-height: 560px;
+    overflow: hidden;
+  }
+
+  .ant-card-extra {
+    font-size: 12px;
+  }
+
+  .ant-empty {
+    margin: 160px 0;
+  }
+}
+
+.markdown-preview-content {
+  min-height: 0;
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 8px;
+  overscroll-behavior: contain;
+  color: theme-var(text);
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+  scrollbar-color: theme-var(border) transparent;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: 0 0 16px;
+    color: theme-var(text);
+    line-height: 1.25;
+  }
+
+  h1 {
+    padding-bottom: 12px;
+    border-bottom: 1px solid theme-var(border);
+    font-size: 1.8rem;
+  }
+
+  h2 {
+    margin-top: 28px;
+    font-size: 1.45rem;
+  }
+
+  h3 {
+    margin-top: 24px;
+    font-size: 1.2rem;
+  }
+
+  p,
+  ul,
+  ol,
+  blockquote,
+  pre,
+  table {
+    margin: 0 0 16px;
+  }
+
+  ul,
+  ol {
+    padding-left: 24px;
+  }
+
+  li + li {
+    margin-top: 6px;
+  }
+
+  a {
+    color: theme-var(primary);
+  }
+
+  blockquote {
+    padding: 8px 16px;
+    color: theme-var(text-secondary);
+    border-left: 3px solid theme-var(primary);
+    background: theme-var(muted);
+  }
+
+  code {
+    padding: 2px 5px;
+    color: theme-var(text);
+    background: theme-var(muted);
+    border-radius: $radius-xs;
+    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+    font-size: 0.9em;
+  }
+
+  pre {
+    overflow: auto;
+    padding: 16px;
+    color: theme-var(text);
+    background: theme-var(background);
+    border: 1px solid theme-var(border);
+    border-radius: $radius-sm;
+
+    code {
+      padding: 0;
+      background: transparent;
+    }
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  th,
+  td {
+    padding: 8px 10px;
+    text-align: left;
+    border: 1px solid theme-var(border);
+  }
+
+  th {
+    color: theme-var(text);
+    background: theme-var(muted);
+    font-weight: 600;
+  }
+
+  img {
+    max-width: 100%;
+    border-radius: $radius-sm;
+  }
+
+  hr {
+    margin: 24px 0;
+    border: 0;
+    border-top: 1px solid theme-var(border);
+  }
+}
+
+.markdown-guide-card {
+  .ant-card-body {
+    padding: 24px;
+  }
+}
+
+.markdown-guide-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+
+  h2 {
+    margin: 4px 0 0;
+    color: theme-var(text);
+    font-size: 1.15rem;
+  }
+
+  > .ant-typography {
+    max-width: 560px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+}
+
+.eyebrow {
+  color: theme-var(primary) !important;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.markdown-guide-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  margin-top: 24px;
+
+  > div {
+    padding: 16px;
+    background: theme-var(muted);
+    border-radius: $radius-md;
+  }
+
+  .ant-typography {
+    color: theme-var(text);
+  }
+
+  p {
+    margin: 8px 0 0;
+    color: theme-var(text-secondary) !important;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+}
+
+@media (max-width: 900px) {
+  .markdown-editor-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .markdown-guide-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .markdown-tool-page {
+    .tool-header,
+    .markdown-guide-heading {
+      flex-direction: column;
+    }
+  }
+
+  .markdown-guide-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .markdown-card .ant-card-body {
+    padding: 16px;
+  }
+
+  .markdown-textarea {
+    min-height: 320px;
+  }
+
+  .markdown-preview-card .ant-card-body {
+    height: 520px;
+    min-height: 0;
+  }
+}

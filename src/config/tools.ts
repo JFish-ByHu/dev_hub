@@ -62,5 +62,12 @@ export const TOOLS_CONFIG: ToolConfig[] = [
     title: "Color Converter & Contrast",
     description: "Convert colors and check WCAG contrast ratios for accessible interfaces.",
     category: "Design",
+  },
+  {
+    id: "markdown",
+    path: "/tools/markdown",
+    title: "Markdown Editor & Preview",
+    description: "Write GitHub Flavored Markdown and preview a sanitized document locally.",
+    category: "Formatter",
   }
 ];

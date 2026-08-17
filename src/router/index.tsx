@@ -12,6 +12,7 @@ const BaseConvertTool = lazy(() => import("../pages/tools/base-convert"))
 const UuidTool = lazy(() => import("../pages/tools/uuid"))
 const RegexTool = lazy(() => import("../pages/tools/regex"))
 const ColorTool = lazy(() => import("../pages/tools/color"))
+const MarkdownTool = lazy(() => import("../pages/tools/markdown"))
 const ToolsIndex = lazy(() => import("../pages/tools"))
 
 function RouteLoading() {
@@ -103,6 +104,14 @@ const router = createHashRouter([
             element: (
               <LazyRoute>
                 <ColorTool />
+              </LazyRoute>
+            )
+          },
+          {
+            path: "markdown",
+            element: (
+              <LazyRoute>
+                <MarkdownTool />
               </LazyRoute>
             )
           }
