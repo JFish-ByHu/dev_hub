@@ -1,0 +1,370 @@
+@use "../../../styles/mixins" as *;
+
+.color-tool-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-bottom: 40px;
+
+  .tool-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 0;
+  }
+
+  .tool-title {
+    margin-bottom: 8px;
+  }
+}
+
+.color-input-card,
+.color-card,
+.color-guide-card {
+  background-color: theme-var(surface) !important;
+  border: 1px solid theme-var(border);
+  border-radius: $radius-lg !important;
+}
+
+.color-input-card,
+.color-card {
+  .ant-card-head {
+    border-bottom-color: theme-var(border);
+  }
+
+  .ant-card-head-title {
+    color: theme-var(text);
+  }
+}
+
+.color-input-card {
+  .ant-card-body {
+    padding: 24px;
+  }
+}
+
+.color-input-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.color-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  > .ant-typography:first-child {
+    color: theme-var(text);
+    font-size: 13px;
+    font-weight: 600;
+  }
+}
+
+.color-field-controls {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 44px;
+  align-items: center;
+  gap: 12px;
+}
+
+.color-value-input {
+  min-width: 0;
+  color: theme-var(text) !important;
+  background: theme-var(background) !important;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+.native-color-picker {
+  width: 44px;
+  height: 32px;
+  padding: 3px;
+  cursor: pointer;
+  background: theme-var(background);
+  border: 1px solid theme-var(border);
+  border-radius: $radius-sm;
+}
+
+.color-field-hint,
+.color-input-actions > .ant-typography {
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.color-input-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.color-preset-select {
+  min-width: 190px;
+}
+
+.color-converter-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.color-values-card {
+  .ant-card-body {
+    min-height: 300px;
+    padding: 24px;
+  }
+}
+
+.color-invalid-message {
+  display: flex;
+  align-items: center;
+  min-height: 220px;
+}
+
+.color-swatch-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+  }
+}
+
+.color-swatch {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 auto;
+  border: 1px solid theme-var(border);
+  border-radius: $radius-md;
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 12%);
+}
+
+.color-value-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.color-value-row {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr) max-content;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  min-height: 32px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid theme-var(border);
+
+  &:last-child {
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+
+  > .ant-typography:first-child {
+    font-size: 12px;
+  }
+
+  .color-code-value {
+    min-width: 0;
+    overflow: hidden;
+    padding: 0;
+    color: theme-var(text) !important;
+    background: transparent !important;
+    border: 0;
+    border-radius: 0;
+    font-size: 14px;
+    font-weight: 600;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &::before,
+    &::after {
+      display: none;
+    }
+  }
+
+  .ant-btn {
+    padding: 0;
+  }
+}
+
+.contrast-card {
+  .ant-card-body {
+    padding: 24px;
+  }
+}
+
+.contrast-score {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  > .ant-typography {
+    font-size: 12px;
+  }
+}
+
+.contrast-score-value {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  color: theme-var(text);
+
+  strong {
+    font-size: 2.5rem;
+    line-height: 1;
+  }
+
+  span {
+    color: theme-var(text-secondary);
+    font-size: 14px;
+  }
+}
+
+.contrast-level-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 14px;
+    background: theme-var(muted);
+    border-radius: $radius-sm;
+  }
+
+  .ant-typography {
+    font-size: 12px;
+  }
+}
+
+.contrast-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 120px;
+  justify-content: center;
+  padding: 20px;
+  border-radius: $radius-md;
+
+  strong {
+    font-size: 22px;
+  }
+
+  span {
+    font-size: 14px;
+  }
+}
+
+.contrast-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  color: theme-var(success);
+
+  .ant-typography {
+    font-size: 13px;
+  }
+}
+
+.color-guide-card {
+  .ant-card-body {
+    padding: 24px;
+  }
+}
+
+.color-guide-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+
+  h2 {
+    margin: 4px 0 0;
+    color: theme-var(text);
+    font-size: 1.15rem;
+  }
+
+  > .ant-typography {
+    max-width: 560px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+}
+
+.eyebrow {
+  color: theme-var(primary) !important;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.color-guide-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  margin-top: 24px;
+
+  > div {
+    padding: 16px;
+    background: theme-var(muted);
+    border-radius: $radius-md;
+  }
+
+  .ant-typography {
+    color: theme-var(text);
+  }
+
+  p {
+    margin: 8px 0 0;
+    color: theme-var(text-secondary) !important;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+}
+
+@media (max-width: 900px) {
+  .color-converter-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .color-guide-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .color-tool-page {
+    .tool-header,
+    .color-guide-heading {
+      flex-direction: column;
+    }
+  }
+
+  .color-input-grid,
+  .color-guide-grid,
+  .contrast-level-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .color-input-actions {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .color-value-row {
+    grid-template-columns: 44px minmax(0, 1fr) max-content;
+    gap: 8px;
+  }
+}

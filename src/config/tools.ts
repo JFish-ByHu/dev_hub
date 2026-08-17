@@ -42,4 +42,25 @@ export const TOOLS_CONFIG: ToolConfig[] = [
     description: "Convert numbers between Binary, Octal, Decimal, and Hex.",
     category: "Converter",
   },
+  {
+    id: "uuid",
+    path: "/tools/uuid",
+    title: "UUID & ID Generator",
+    description: "Generate UUID v4 and time-ordered UUID v7 identifiers in batches.",
+    category: "Generator",
+  },
+  {
+    id: "regex",
+    path: "/tools/regex",
+    title: "Regex Tester & Generator",
+    description: "Test JavaScript regular expressions and start from practical templates.",
+    category: "Tester",
+  },
+  {
+    id: "color",
+    path: "/tools/color",
+    title: "Color Converter & Contrast",
+    description: "Convert colors and check WCAG contrast ratios for accessible interfaces.",
+    category: "Design",
+  }
 ];

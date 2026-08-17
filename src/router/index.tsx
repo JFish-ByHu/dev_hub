@@ -9,6 +9,9 @@ const JsonTool = lazy(() => import("../pages/tools/json/index"))
 const TimestampTool = lazy(() => import("../pages/tools/timestamp/index"))
 const UrlTool = lazy(() => import("../pages/tools/url"))
 const BaseConvertTool = lazy(() => import("../pages/tools/base-convert"))
+const UuidTool = lazy(() => import("../pages/tools/uuid"))
+const RegexTool = lazy(() => import("../pages/tools/regex"))
+const ColorTool = lazy(() => import("../pages/tools/color"))
 
 function RouteLoading() {
   return <div className="route-loading">Loading tool...</div>
@@ -67,6 +70,30 @@ const router = createHashRouter([
             element: (
               <LazyRoute>
                 <TimestampTool />
+              </LazyRoute>
+            )
+          },
+          {
+            path: "uuid",
+            element: (
+              <LazyRoute>
+                <UuidTool />
+              </LazyRoute>
+            )
+          },
+          {
+            path: "regex",
+            element: (
+              <LazyRoute>
+                <RegexTool />
+              </LazyRoute>
+            )
+          },
+          {
+            path: "color",
+            element: (
+              <LazyRoute>
+                <ColorTool />
               </LazyRoute>
             )
           }

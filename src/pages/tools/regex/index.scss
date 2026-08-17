@@ -1,0 +1,444 @@
+@use "../../../styles/mixins" as *;
+
+.regex-tool-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-bottom: 40px;
+
+  .tool-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 0;
+  }
+
+  .tool-title {
+    margin-bottom: 8px;
+  }
+}
+
+.regex-options-card,
+.regex-card,
+.regex-presets-card,
+.regex-guide-card {
+  background-color: theme-var(surface) !important;
+  border: 1px solid theme-var(border);
+  border-radius: $radius-lg !important;
+}
+
+.regex-options-card {
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) minmax(360px, 1.25fr) max-content;
+  align-items: end;
+  gap: 20px 24px;
+  padding: 20px 24px;
+}
+
+.regex-pattern-control,
+.regex-flags-control {
+  min-width: 0;
+
+  > .ant-typography:first-child {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 12px;
+  }
+}
+
+.regex-pattern-input {
+  .ant-input {
+    min-width: 0;
+    color: theme-var(text) !important;
+    background: theme-var(background) !important;
+    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+  }
+
+  .ant-input-group-addon {
+    color: theme-var(text-secondary);
+    background: theme-var(muted);
+    border-color: theme-var(border);
+    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+  }
+}
+
+.regex-flags-control {
+  .ant-checkbox-wrapper {
+    color: theme-var(text-secondary);
+    font-size: 13px;
+  }
+
+  .regex-flag-label {
+    strong {
+      color: theme-var(primary);
+      font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+    }
+  }
+}
+
+.regex-option-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.regex-option-hint {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: -4px 0 0;
+  font-size: 12px;
+}
+
+.regex-tool-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 24px;
+}
+
+.regex-card {
+  .ant-card-head {
+    border-bottom-color: theme-var(border);
+  }
+
+  .ant-card-head-title {
+    color: theme-var(text);
+  }
+
+  .ant-card-body {
+    min-height: 520px;
+    padding: 24px;
+  }
+}
+
+.regex-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  > .ant-typography:first-child {
+    font-size: 12px;
+    font-weight: 600;
+  }
+}
+
+.regex-textarea,
+.regex-output-textarea {
+  resize: vertical !important;
+  color: theme-var(text) !important;
+  background: theme-var(background) !important;
+  border-radius: $radius-sm;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-size: 14px;
+  line-height: 1.55;
+
+  &::placeholder {
+    color: theme-var(text-secondary);
+  }
+}
+
+.regex-replacement-field {
+  margin-top: 20px;
+}
+
+.regex-replacement-input {
+  color: theme-var(text) !important;
+  background: theme-var(background) !important;
+}
+
+.regex-field-hint {
+  font-size: 12px;
+  line-height: 1.5;
+
+  code {
+    color: theme-var(text);
+    background: theme-var(muted);
+    border-radius: $radius-xs;
+    padding: 1px 4px;
+  }
+}
+
+.regex-result-card {
+  .ant-empty {
+    margin: 80px 0;
+  }
+
+  .ant-alert {
+    margin-bottom: 20px;
+  }
+}
+
+.regex-result-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+    padding: 12px;
+    background: theme-var(muted);
+    border-radius: $radius-sm;
+  }
+
+  .ant-typography {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.regex-match-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 300px;
+  overflow: auto;
+}
+
+.regex-match-item {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  align-items: center;
+  gap: 4px 12px;
+  min-width: 0;
+  padding: 10px 12px;
+  background: theme-var(muted);
+  border-radius: $radius-sm;
+
+  .regex-match-index {
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .regex-match-value {
+    min-width: 0;
+    overflow: hidden;
+    padding: 0;
+    color: theme-var(text) !important;
+    background: transparent !important;
+    border: 0;
+    border-radius: 0;
+    font-size: 14px;
+    font-weight: 600;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &::before,
+    &::after {
+      display: none;
+    }
+  }
+
+  .regex-group-summary {
+    grid-column: 2;
+    overflow: hidden;
+    font-size: 12px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.regex-list-hint {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+}
+
+.regex-replacement-result {
+  margin-top: 20px;
+}
+
+.regex-replacement-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.regex-output-textarea {
+  min-height: 90px;
+}
+
+.regex-presets-card,
+.regex-guide-card {
+  .ant-card-body {
+    padding: 24px;
+  }
+}
+
+.regex-presets-heading,
+.regex-guide-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+
+  h2 {
+    margin: 4px 0 0;
+    color: theme-var(text);
+    font-size: 1.15rem;
+  }
+
+  > .ant-typography {
+    max-width: 560px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+}
+
+.regex-presets-content {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.7fr) minmax(0, 1.3fr) max-content;
+  align-items: center;
+  gap: 20px;
+  margin-top: 24px;
+}
+
+.regex-preset-select {
+  width: 100%;
+}
+
+.regex-preset-preview {
+  min-width: 0;
+}
+
+.regex-preset-preview-heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+
+  .ant-typography {
+    overflow: hidden;
+    font-size: 12px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.regex-preset-value {
+  display: block;
+  overflow: hidden;
+  padding: 0;
+  color: theme-var(text) !important;
+  background: transparent !important;
+  border: 0;
+  border-radius: 0;
+  font-size: 14px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &::before,
+  &::after {
+    display: none;
+  }
+}
+
+.eyebrow {
+  color: theme-var(primary) !important;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.regex-guide-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  margin-top: 24px;
+
+  > div {
+    padding: 16px;
+    background: theme-var(muted);
+    border-radius: $radius-md;
+  }
+
+  .ant-typography {
+    color: theme-var(text);
+  }
+
+  p {
+    margin: 8px 0 0;
+    color: theme-var(text-secondary) !important;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+}
+
+@media (max-width: 1100px) {
+  .regex-options-card {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .regex-pattern-control {
+    grid-column: 1 / -1;
+  }
+
+  .regex-option-actions {
+    justify-self: start;
+  }
+
+  .regex-presets-content {
+    grid-template-columns: minmax(220px, 0.7fr) minmax(0, 1fr);
+  }
+
+  .regex-presets-content > .ant-space {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 900px) {
+  .regex-tool-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .regex-guide-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .regex-tool-page {
+    .tool-header,
+    .regex-presets-heading,
+    .regex-guide-heading {
+      flex-direction: column;
+    }
+  }
+
+  .regex-options-card,
+  .regex-presets-content,
+  .regex-guide-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .regex-pattern-control {
+    grid-column: auto;
+  }
+
+  .regex-option-hint,
+  .regex-presets-content > .ant-space {
+    grid-column: auto;
+  }
+
+  .regex-result-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .regex-match-item {
+    grid-template-columns: 1fr max-content;
+
+    .regex-match-index {
+      grid-column: 1 / -1;
+    }
+
+    .regex-group-summary {
+      grid-column: 1 / -1;
+    }
+  }
+}
