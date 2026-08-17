@@ -1,0 +1,161 @@
+@use "../../styles/mixins" as *;
+
+.tools-index-page {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding-bottom: 40px;
+}
+
+.tools-index-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+
+  h1 {
+    margin: 8px 0;
+    color: theme-var(text);
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.1;
+  }
+
+  p {
+    max-width: 680px;
+    margin: 0;
+    color: theme-var(text-secondary);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+}
+
+.eyebrow {
+  color: theme-var(primary) !important;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.tools-index-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  .ant-input-affix-wrapper {
+    max-width: 680px;
+    color: theme-var(text) !important;
+    background: theme-var(surface) !important;
+    border-color: theme-var(border);
+  }
+
+  .ant-input {
+    color: theme-var(text) !important;
+    background: transparent !important;
+  }
+}
+
+.tools-index-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.tools-index-group-heading {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 12px;
+
+  h2 {
+    margin: 0;
+    color: theme-var(text);
+    font-size: 1.2rem;
+  }
+
+  .ant-typography {
+    font-size: 12px;
+  }
+}
+
+.tools-index-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.tools-index-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  min-height: 150px;
+  padding: 20px;
+  text-align: left;
+  cursor: pointer;
+  background: theme-var(surface);
+  border: 1px solid theme-var(border);
+  border-radius: $radius-md;
+  transition:
+    border-color 0.2s,
+    background-color 0.2s,
+    transform 0.2s;
+
+  &:hover {
+    background: theme-var(muted);
+    border-color: theme-var(primary);
+    transform: translateY(-2px);
+  }
+}
+
+.tools-index-item-title {
+  color: theme-var(text);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.tools-index-item-description {
+  flex: 1;
+  color: theme-var(text-secondary);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.tools-index-item-link {
+  color: theme-var(primary);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.tools-index-empty {
+  padding: 60px 20px;
+  color: theme-var(text-secondary);
+  text-align: center;
+  background: theme-var(surface);
+  border: 1px solid theme-var(border);
+  border-radius: $radius-lg;
+}
+
+@media (max-width: 900px) {
+  .tools-index-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .tools-index-header {
+    flex-direction: column;
+  }
+
+  .tools-index-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+
+    .ant-input-affix-wrapper {
+      max-width: none;
+    }
+  }
+
+  .tools-index-grid {
+    grid-template-columns: 1fr;
+  }
+}

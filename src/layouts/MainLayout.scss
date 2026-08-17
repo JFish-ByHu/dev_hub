@@ -102,11 +102,76 @@
   border-radius: $radius-md;
   padding: 20px;
   min-width: 480px;
+  max-width: min(920px, calc(100vw - 32px));
+
+  .mega-menu-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid theme-var(border);
+  }
+
+  .mega-menu-search {
+    flex: 1;
+    min-width: 0;
+
+    &.ant-input-affix-wrapper {
+      background: theme-var(background) !important;
+      border-color: theme-var(border);
+      box-shadow: none;
+
+      &:hover,
+      &:focus-within {
+        border-color: theme-var(primary);
+        box-shadow: none;
+      }
+    }
+
+    .ant-input {
+      color: theme-var(text) !important;
+      background: transparent !important;
+    }
+
+    .ant-input-prefix,
+    .ant-input-clear-icon {
+      color: theme-var(text-secondary);
+    }
+  }
+
+  .mega-menu-scroll-area {
+    max-height: min(560px, calc(100vh - 132px));
+    padding-top: 16px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-color: theme-var(border) transparent;
+  }
+
+  .mega-menu-groups {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px 24px;
+  }
+
+  .mega-menu-group {
+    min-width: 0;
+  }
+
+  .mega-menu-category {
+    margin: 0 0 8px;
+    padding: 0 4px;
+    color: theme-var(text-secondary);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    line-height: 1.4;
+    text-transform: uppercase;
+  }
 
   .mega-menu-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 24px;
+    gap: 8px 12px;
   }
 
   .mega-menu-item {
@@ -148,5 +213,38 @@
     color: theme-var(text-secondary);
     line-height: 1.4;
     white-space: normal;
+  }
+
+  .mega-menu-empty {
+    padding: 32px 12px;
+    color: theme-var(text-secondary);
+    text-align: center;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 600px) {
+  .mega-menu-popup {
+    min-width: min(360px, calc(100vw - 24px));
+    padding: 12px;
+
+    .mega-menu-toolbar {
+      align-items: stretch;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .mega-menu-toolbar .ant-btn {
+      align-self: flex-start;
+      padding-inline: 0;
+    }
+
+    .mega-menu-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .mega-menu-groups {
+      grid-template-columns: 1fr;
+    }
   }
 }

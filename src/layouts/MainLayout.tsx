@@ -1,6 +1,7 @@
-import React from "react"
+import React, { useMemo, useState } from "react"
 import { Outlet, useNavigate, useLocation } from "react-router-dom"
-import { Menu } from "antd"
+import { Button, Input, Menu } from "antd"
+import { AppstoreOutlined, SearchOutlined } from "@ant-design/icons"
 import type { MenuProps } from "antd"
 import { useThemeStore } from "../stores/useThemeStore"
 import { TOOLS_CONFIG } from "../config/tools"
@@ -10,6 +11,25 @@ const MainLayout: React.FC = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const { mode, toggleTheme } = useThemeStore()
+  const [toolQuery, setToolQuery] = useState("")
+
+  const filteredToolGroups = useMemo(() => {
+    const query = toolQuery.trim().toLowerCase()
+    const groups = new Map<string, typeof TOOLS_CONFIG>()
+
+    TOOLS_CONFIG.forEach((tool) => {
+      const searchableText =
+        `${tool.title} ${tool.description} ${tool.category ?? ""}`.toLowerCase()
+      if (query && !searchableText.includes(query)) return
+
+      const category = tool.category ?? "Other"
+      const group = groups.get(category) ?? []
+      group.push(tool)
+      groups.set(category, group)
+    })
+
+    return Array.from(groups.entries())
+  }, [toolQuery])
 
   const menuItems: MenuProps["items"] = [
     {
@@ -40,6 +60,21 @@ const MainLayout: React.FC = () => {
     }
   }
 
+  const handleMegaMenuWheel = (event: React.WheelEvent<HTMLDivElement>) => {
+    const { clientHeight, scrollHeight, scrollTop } = event.currentTarget
+    const hasScrollableContent = scrollHeight > clientHeight
+    const isAtTop = scrollTop <= 0
+    const isAtBottom = scrollTop + clientHeight >= scrollHeight - 1
+
+    if (
+      !hasScrollableContent ||
+      (event.deltaY < 0 && isAtTop) ||
+      (event.deltaY > 0 && isAtBottom)
+    ) {
+      event.preventDefault()
+    }
+  }
+
   const selectedMenuKey =
     location.pathname === "/"
       ? "/"
@@ -53,20 +88,57 @@ const MainLayout: React.FC = () => {
   const popupRender = () => {
     return (
       <div className="mega-menu-popup">
-        <div className="mega-menu-grid">
-          {TOOLS_CONFIG.map((tool) => {
-            const isActive = location.pathname.startsWith(tool.path)
-            return (
-              <div
-                key={tool.id}
-                className={`mega-menu-item ${isActive ? "active" : ""}`}
-                onClick={() => navigate(tool.path)}
-              >
-                <h4 className="mega-menu-title">{tool.title}</h4>
-                <p className="mega-menu-desc">{tool.description}</p>
-              </div>
-            )
-          })}
+        <div className="mega-menu-toolbar">
+          <Input
+            value={toolQuery}
+            onChange={(event) => setToolQuery(event.target.value)}
+            onKeyDown={(event) => event.stopPropagation()}
+            placeholder="Search tools..."
+            prefix={<SearchOutlined />}
+            allowClear
+            className="mega-menu-search"
+          />
+          <Button
+            type="link"
+            icon={<AppstoreOutlined />}
+            onClick={() => {
+              setToolQuery("")
+              navigate("/tools")
+            }}
+          >
+            View all tools
+          </Button>
+        </div>
+        <div className="mega-menu-scroll-area" onWheel={handleMegaMenuWheel}>
+          {filteredToolGroups.length > 0 ? (
+            <div className="mega-menu-groups">
+              {filteredToolGroups.map(([category, tools]) => (
+                <section className="mega-menu-group" key={category}>
+                  <h3 className="mega-menu-category">{category}</h3>
+                  <div className="mega-menu-grid">
+                    {tools.map((tool) => {
+                      const isActive = location.pathname.startsWith(tool.path)
+                      return (
+                        <div
+                          key={tool.id}
+                          className={`mega-menu-item ${isActive ? "active" : ""}`}
+                          onClick={() => {
+                            setToolQuery("")
+                            navigate(tool.path)
+                          }}
+                        >
+                          <h4 className="mega-menu-title">{tool.title}</h4>
+                          <p className="mega-menu-desc">{tool.description}</p>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </section>
+              ))}
+            </div>
+          ) : (
+            <div className="mega-menu-empty">No tools match “{toolQuery}”.</div>
+          )}
         </div>
       </div>
     )
@@ -86,6 +158,9 @@ const MainLayout: React.FC = () => {
               items={menuItems}
               popupRender={popupRender}
               onClick={handleMenuClick}
+              onOpenChange={(openKeys) => {
+                if (!openKeys.includes("/tools")) setToolQuery("")
+              }}
               className="custom-menu"
             />
           </div>
