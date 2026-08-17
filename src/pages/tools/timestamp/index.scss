@@ -81,10 +81,24 @@
   margin-top: 8px;
 
   .ant-typography {
+    display: block;
     overflow: hidden;
+    min-width: 0;
+    padding: 0;
+    color: theme-var(text) !important;
+    background-color: transparent !important;
+    border: 0;
+    border-radius: 0;
     font-size: 15px;
+    font-weight: 600;
+    line-height: 1.5;
     text-overflow: ellipsis;
     white-space: nowrap;
+
+    &::before,
+    &::after {
+      display: none;
+    }
   }
 
   .ant-btn {
@@ -99,6 +113,22 @@
   align-items: center;
   gap: 8px 16px;
   font-size: 13px;
+
+  .ant-typography-code {
+    padding: 0;
+    color: theme-var(text) !important;
+    background-color: transparent !important;
+    border: 0;
+    border-radius: 0;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.5;
+
+    &::before,
+    &::after {
+      display: none;
+    }
+  }
 }
 
 .timestamp-converter-grid {
@@ -210,8 +240,19 @@
 }
 
 .result-value {
-  color: theme-var(primary) !important;
-  font-size: 13px;
+  padding: 0;
+  color: theme-var(text) !important;
+  background-color: transparent !important;
+  border: 0;
+  border-radius: 0;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.5;
+
+  &::before,
+  &::after {
+    display: none;
+  }
 }
 
 .timestamp-guide-card {

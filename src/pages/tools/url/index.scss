@@ -1,0 +1,230 @@
+@use "../../../styles/mixins" as *;
+
+.url-tool-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-bottom: 40px;
+
+  .tool-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 0;
+  }
+
+  .tool-title {
+    margin-bottom: 8px;
+  }
+}
+
+.url-options-card,
+.url-card,
+.url-details-card,
+.url-guide-card {
+  background-color: theme-var(surface) !important;
+  border: 1px solid theme-var(border);
+  border-radius: $radius-lg !important;
+}
+
+.url-options-card {
+  display: grid;
+  grid-template-columns: minmax(180px, 0.8fr) minmax(240px, 1fr) minmax(260px, 1.2fr);
+  align-items: end;
+  gap: 24px;
+  padding: 20px 24px;
+
+  .ant-typography {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 12px;
+  }
+}
+
+.encoding-description {
+  align-self: center;
+  margin: 0 !important;
+  line-height: 1.5;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.url-converter-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.url-card {
+  .ant-card-head {
+    border-bottom-color: theme-var(border);
+  }
+
+  .ant-card-head-title {
+    color: theme-var(text);
+  }
+
+  .ant-card-body {
+    display: flex;
+    flex-direction: column;
+    min-height: 430px;
+    padding: 24px;
+  }
+}
+
+.url-textarea {
+  flex: 1;
+  min-height: 280px;
+  resize: none !important;
+  color: theme-var(text) !important;
+  background: theme-var(background) !important;
+  border-radius: $radius-sm;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-size: 14px;
+  line-height: 1.55;
+
+  &::placeholder {
+    color: theme-var(text-secondary);
+  }
+}
+
+.result-textarea {
+  min-height: 280px;
+}
+
+.url-input-actions,
+.url-result-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.url-stats,
+.url-result-actions > .ant-typography {
+  display: flex;
+  gap: 12px;
+  font-size: 12px;
+}
+
+.url-details-card,
+.url-guide-card {
+  .ant-card-body {
+    padding: 24px;
+  }
+}
+
+.url-details-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+    padding: 14px 16px;
+    background: theme-var(muted);
+    border-radius: $radius-md;
+  }
+
+  .ant-typography {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.url-guide-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+
+  h2 {
+    margin: 4px 0 0;
+    color: theme-var(text);
+    font-size: 1.15rem;
+  }
+
+  > .ant-typography {
+    max-width: 560px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+}
+
+.eyebrow {
+  color: theme-var(primary) !important;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.url-guide-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  margin-top: 24px;
+
+  > div {
+    padding: 16px;
+    background: theme-var(muted);
+    border-radius: $radius-md;
+  }
+
+  .ant-typography {
+    color: theme-var(text);
+  }
+
+  p {
+    margin: 8px 0 0;
+    color: theme-var(text-secondary) !important;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+}
+
+@media (max-width: 900px) {
+  .url-options-card {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .encoding-description {
+    grid-column: 1 / -1;
+  }
+
+  .url-converter-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .url-details-grid,
+  .url-guide-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .url-tool-page {
+    .tool-header,
+    .url-guide-heading {
+      flex-direction: column;
+    }
+  }
+
+  .url-options-card,
+  .url-details-grid,
+  .url-guide-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .encoding-description {
+    grid-column: auto;
+  }
+}

@@ -38,6 +38,14 @@ body {
     background-color 0.2s ease;
 }
 
+.route-loading {
+  min-height: 240px;
+  display: grid;
+  place-items: center;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
 a {
   color: var(--primary);
   text-decoration: none;
