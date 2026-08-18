@@ -1,0 +1,43 @@
+@use "./mixins" as *;
+
+.tool-page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 0;
+}
+
+.tool-page-title {
+  margin: 0 0 8px;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: theme-var(text);
+}
+
+.tool-page-description {
+  margin: 0;
+  color: theme-var(text-secondary);
+  font-size: 1rem;
+}
+
+.tool-card {
+  background-color: theme-var(surface) !important;
+  border: 1px solid theme-var(border);
+  border-radius: $radius-lg !important;
+
+  .ant-card-head {
+    border-bottom-color: theme-var(border);
+  }
+
+  .ant-card-head-title {
+    color: theme-var(text);
+  }
+}
+
+@media (max-width: 600px) {
+  .tool-page-header {
+    flex-direction: column;
+    gap: 12px;
+  }
+}

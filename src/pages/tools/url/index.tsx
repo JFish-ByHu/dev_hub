@@ -1,5 +1,6 @@
 import { Tag } from "antd"
 import { LinkOutlined } from "@ant-design/icons"
+import ToolPageHeader from "../../../components/tool/ToolPageHeader"
 import UrlDetailsCard from "./components/UrlDetailsCard"
 import UrlGuide from "./components/UrlGuide"
 import UrlInputCard from "./components/UrlInputCard"
@@ -13,18 +14,15 @@ export default function UrlTool() {
 
   return (
     <div className="url-tool-page">
-      <div className="tool-header">
-        <div>
-          <h1 className="tool-title">URL Encoder & Decoder</h1>
-          <p className="tool-desc">
-            Encode complete URLs or individual components, decode percent-encoded values, and
-            inspect absolute URL parts.
-          </p>
-        </div>
-        <Tag icon={<LinkOutlined />} color="blue">
-          Runs locally in your browser
-        </Tag>
-      </div>
+      <ToolPageHeader
+        title="URL Encoder & Decoder"
+        description="Encode complete URLs or individual components, decode percent-encoded values, and inspect absolute URL parts."
+        extra={
+          <Tag icon={<LinkOutlined />} color="blue">
+            Runs locally in your browser
+          </Tag>
+        }
+      />
 
       <UrlOptions
         operation={url.operation}

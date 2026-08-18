@@ -1,5 +1,6 @@
 import JsonEditor from "./components/JsonEditor"
 import JsonViewer from "./components/JsonViewer"
+import ToolPageHeader from "../../../components/tool/ToolPageHeader"
 import { useJsonTool } from "./hooks/useJsonTool"
 import "./index.scss"
 
@@ -8,20 +9,17 @@ export default function JsonTool() {
 
   return (
     <div className="json-tool-page">
-      <div className="tool-header">
-        <h1 className="tool-title">JSON Formatter & Validator</h1>
-        <p className="tool-desc">
-          Easily format, compress, and validate your JSON data! Extract specific element paths
-          instantly using the Interactive Tree.
-        </p>
-      </div>
+      <ToolPageHeader
+        title="JSON Formatter & Validator"
+        description="Easily format, compress, and validate your JSON data! Extract specific element paths instantly using the Interactive Tree."
+      />
 
       <div className="json-layout">
         <JsonEditor
           inputVal={json.inputVal}
           isValid={json.isValid}
           stats={json.stats}
-          onInputChange={json.parseAndSet}
+          onInputChange={json.setInput}
           onFormat={json.formatJson}
           onMinify={json.minifyJson}
           copyValue={json.formattedJson}
@@ -30,7 +28,7 @@ export default function JsonTool() {
           onClear={json.clearJson}
           onFile={json.processFile}
         />
-        <JsonViewer inputVal={json.inputVal} parsedData={json.parsedData} error={json.error} />
+        <JsonViewer analysis={json.analysis} isParsing={json.isParsing} />
       </div>
     </div>
   )

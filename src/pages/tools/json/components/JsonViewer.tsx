@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react"
 import type { Key } from "react"
-import { Alert, Button, Card, Divider, Space, Tree, Typography } from "antd"
+import { Alert, Button, Divider, Space, Tree, Typography } from "antd"
+import ToolCard from "../../../../components/tool/ToolCard"
 import type { DataNode, TreeProps } from "antd/es/tree"
 import {
   CheckCircleOutlined,
@@ -9,15 +10,16 @@ import {
   CopyOutlined,
   ExpandOutlined
 } from "@ant-design/icons"
-import { buildTree } from "../utils/treeBuilder"
+import type { JsonAnalysis } from "../utils/json"
 import { collectExpandableKeys, toJsonPath } from "../utils/json"
+import { MAX_JSON_TREE_DEPTH } from "../utils/jsonTree"
+import { buildTree } from "../utils/treeBuilder"
 
 const { Text, Paragraph } = Typography
 
 interface JsonViewerProps {
-  inputVal: string
-  parsedData: unknown | undefined
-  error: string | null
+  analysis: JsonAnalysis
+  isParsing: boolean
 }
 
 function containsTreeKey(nodes: DataNode[], key: Key): boolean {
@@ -26,14 +28,14 @@ function containsTreeKey(nodes: DataNode[], key: Key): boolean {
   )
 }
 
-export default function JsonViewer({ inputVal, parsedData, error }: JsonViewerProps) {
+export default function JsonViewer({ analysis, isParsing }: JsonViewerProps) {
   const [selectedKey, setSelectedKey] = useState<Key | null>(null)
   const [expandedKeys, setExpandedKeys] = useState<Key[]>(["root"])
 
   const treeData = useMemo<DataNode[]>(() => {
-    if (parsedData === undefined) return []
-    return [buildTree(parsedData)]
-  }, [parsedData])
+    if (analysis.kind !== "success") return []
+    return [buildTree(analysis.tree)]
+  }, [analysis])
 
   const expandableKeys = useMemo(() => collectExpandableKeys(treeData), [treeData])
 
@@ -52,25 +54,46 @@ export default function JsonViewer({ inputVal, parsedData, error }: JsonViewerPr
     setSelectedKey(selectedKeys.length > 0 ? selectedKeys[0] : null)
   }
 
+  const isEmpty = analysis.kind === "empty"
+  const isError = analysis.kind === "error"
+  const isSuccess = analysis.kind === "success"
+
   return (
-    <Card title="Interactive Tree View" className="json-card" bordered={false}>
+    <ToolCard title="Interactive Tree View" className="json-card" bordered={false}>
       <div className="status-bar" style={{ marginBottom: 16 }}>
-        {inputVal.trim() === "" ? (
+        {isEmpty ? (
           <Alert message="Awaiting Input" type="info" showIcon />
-        ) : error ? (
+        ) : isError ? (
           <Alert
             message="Validation Failed"
-            description={error}
+            description={analysis.error}
             type="error"
             showIcon
             icon={<CloseCircleOutlined />}
           />
+        ) : analysis.kind === "pending" || isParsing ? (
+          <Alert
+            message="Analyzing JSON"
+            description="The tree will update shortly."
+            type="info"
+            showIcon
+          />
         ) : (
           <Alert message="Valid JSON" type="success" showIcon icon={<CheckCircleOutlined />} />
         )}
+        {isSuccess &&
+          (analysis.treeMeta.depthLimitReached || analysis.treeMeta.nodeLimitReached) && (
+            <Alert
+              message="Tree view was limited for responsiveness"
+              description={`Showing up to ${analysis.treeMeta.nodeCount.toLocaleString()} nodes and ${MAX_JSON_TREE_DEPTH} levels. Formatting and downloading still include the complete JSON.`}
+              type="warning"
+              showIcon
+              style={{ marginTop: 8 }}
+            />
+          )}
       </div>
 
-      {parsedData !== undefined && (
+      {isSuccess && (
         <div className="path-extractor" style={{ marginBottom: 16 }}>
           <div className="path-toolbar">
             <Text type="secondary">Selected Node Path:</Text>
@@ -112,7 +135,7 @@ export default function JsonViewer({ inputVal, parsedData, error }: JsonViewerPr
       <Divider style={{ margin: "16px 0" }} />
 
       <div className="json-tree-container">
-        {parsedData !== undefined ? (
+        {isSuccess ? (
           <Tree
             showLine
             treeData={treeData}
@@ -122,9 +145,13 @@ export default function JsonViewer({ inputVal, parsedData, error }: JsonViewerPr
             className="custom-json-tree"
           />
         ) : (
-          <div className="empty-placeholder">Tree view will appear here upon valid entry.</div>
+          <div className="empty-placeholder">
+            {analysis.kind === "pending" || isParsing
+              ? "Analyzing JSON tree..."
+              : "Tree view will appear here upon valid entry."}
+          </div>
         )}
       </div>
-    </Card>
+    </ToolCard>
   )
 }

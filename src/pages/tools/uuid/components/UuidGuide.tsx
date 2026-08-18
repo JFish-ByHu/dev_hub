@@ -1,10 +1,11 @@
-import { Card, Typography } from "antd"
+import { Typography } from "antd"
+import ToolCard from "../../../../components/tool/ToolCard"
 
 const { Paragraph, Text } = Typography
 
 export default function UuidGuide() {
   return (
-    <Card className="uuid-guide-card" bordered={false}>
+    <ToolCard className="uuid-guide-card" bordered={false}>
       <div className="uuid-guide-heading">
         <div>
           <Text className="eyebrow">REFERENCE</Text>
@@ -37,6 +38,6 @@ export default function UuidGuide() {
           </Paragraph>
         </div>
       </div>
-    </Card>
+    </ToolCard>
   )
 }

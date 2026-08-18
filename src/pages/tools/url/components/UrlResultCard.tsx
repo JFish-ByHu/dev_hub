@@ -1,4 +1,5 @@
-import { Alert, Card, Divider, Input, Tag, Typography } from "antd"
+import { Alert, Divider, Input, Tag, Typography } from "antd"
+import ToolCard from "../../../../components/tool/ToolCard"
 import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons"
 import CopyButton from "../../../../components/CopyButton"
 import type { UrlConversionResult } from "../hooks/useUrlCodec"
@@ -15,7 +16,7 @@ interface UrlResultCardProps {
 
 export default function UrlResultCard({ operation, conversion, outputStats }: UrlResultCardProps) {
   return (
-    <Card
+    <ToolCard
       title={operation === "encode" ? "Encoded Result" : "Decoded Result"}
       extra={conversion.kind === "success" ? <Tag color="green">Ready</Tag> : <Tag>Waiting</Tag>}
       className="url-card"
@@ -58,6 +59,6 @@ export default function UrlResultCard({ operation, conversion, outputStats }: Ur
           </div>
         </>
       )}
-    </Card>
+    </ToolCard>
   )
 }

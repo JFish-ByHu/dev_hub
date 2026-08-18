@@ -6,6 +6,7 @@ import {
   type Base64Variant,
   textToUtf8Bytes
 } from "../utils/base64"
+import { MAX_TOOL_FILE_SIZE } from "../../../../utils/download"
 
 export type ConversionMode = "encode" | "decode"
 
@@ -91,17 +92,26 @@ export function useBase64Conversion() {
   }
 
   const processFile = async (file: File) => {
-    if (mode === "encode") {
-      setFileBytes(new Uint8Array(await file.arrayBuffer()))
-      setFileName(file.name)
-      setInput("")
-      message.success(`Loaded ${file.name}`)
+    if (file.size > MAX_TOOL_FILE_SIZE) {
+      message.error("Files must be smaller than 10 MB.")
       return
     }
 
-    setTextInput(await file.text())
-    setFileName(file.name)
-    message.success(`Loaded ${file.name}`)
+    try {
+      if (mode === "encode") {
+        setFileBytes(new Uint8Array(await file.arrayBuffer()))
+        setFileName(file.name)
+        setInput("")
+        message.success(`Loaded ${file.name}`)
+        return
+      }
+
+      setTextInput(await file.text())
+      setFileName(file.name)
+      message.success(`Loaded ${file.name}`)
+    } catch {
+      message.error(`Unable to read ${file.name}.`)
+    }
   }
 
   return {

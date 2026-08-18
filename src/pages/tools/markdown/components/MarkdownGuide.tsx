@@ -1,10 +1,11 @@
-import { Card, Typography } from "antd"
+import { Typography } from "antd"
+import ToolCard from "../../../../components/tool/ToolCard"
 
 const { Paragraph, Text } = Typography
 
 export default function MarkdownGuide() {
   return (
-    <Card className="markdown-guide-card" bordered={false}>
+    <ToolCard className="markdown-guide-card" bordered={false}>
       <div className="markdown-guide-heading">
         <div>
           <Text className="eyebrow">REFERENCE</Text>
@@ -37,6 +38,6 @@ export default function MarkdownGuide() {
           </Paragraph>
         </div>
       </div>
-    </Card>
+    </ToolCard>
   )
 }

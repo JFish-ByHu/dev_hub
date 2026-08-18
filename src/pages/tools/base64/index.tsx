@@ -1,5 +1,6 @@
 import { Tag } from "antd"
 import { FileTextOutlined } from "@ant-design/icons"
+import ToolPageHeader from "../../../components/tool/ToolPageHeader"
 import Base64Guide from "./components/Base64Guide"
 import Base64InputCard from "./components/Base64InputCard"
 import Base64Options from "./components/Base64Options"
@@ -12,18 +13,15 @@ export default function Base64Tool() {
 
   return (
     <div className="base64-tool-page">
-      <div className="tool-header">
-        <div>
-          <h1 className="tool-title">Base64 Encoder & Decoder</h1>
-          <p className="tool-desc">
-            Encode UTF-8 text and files, or decode Base64 values with standard and URL-safe alphabet
-            support.
-          </p>
-        </div>
-        <Tag icon={<FileTextOutlined />} color="blue">
-          Local processing only
-        </Tag>
-      </div>
+      <ToolPageHeader
+        title="Base64 Encoder & Decoder"
+        description="Encode UTF-8 text and files, or decode Base64 values with standard and URL-safe alphabet support."
+        extra={
+          <Tag icon={<FileTextOutlined />} color="blue">
+            Local processing only
+          </Tag>
+        }
+      />
 
       <Base64Options
         mode={base64.mode}

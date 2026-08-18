@@ -1,4 +1,5 @@
-import { Alert, Card, Divider, Progress, Tag, Typography } from "antd"
+import { Alert, Divider, Progress, Tag, Typography } from "antd"
+import ToolCard from "../../../../components/tool/ToolCard"
 import { CheckCircleOutlined, WarningOutlined } from "@ant-design/icons"
 import type { ContrastEvaluation, RgbaColor } from "../utils/color"
 import { formatCssColor } from "../utils/color"
@@ -17,7 +18,7 @@ function levelTag(label: ContrastEvaluation["normal"]) {
 
 export default function ContrastCard({ foreground, background, contrast }: ContrastCardProps) {
   return (
-    <Card title="WCAG contrast" className="color-card contrast-card" bordered={false}>
+    <ToolCard title="WCAG contrast" className="color-card contrast-card" bordered={false}>
       {!contrast || !foreground || !background ? (
         <Alert
           message="Enter two valid colors"
@@ -75,6 +76,6 @@ export default function ContrastCard({ foreground, background, contrast }: Contr
           </div>
         </>
       )}
-    </Card>
+    </ToolCard>
   )
 }

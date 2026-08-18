@@ -1,35 +1,21 @@
-import React, { useMemo, useState } from "react"
+import React from "react"
 import { Outlet, useNavigate, useLocation } from "react-router-dom"
 import { Button, Input, Menu } from "antd"
 import { AppstoreOutlined, SearchOutlined } from "@ant-design/icons"
 import type { MenuProps } from "antd"
 import { useThemeStore } from "../stores/useThemeStore"
-import { TOOLS_CONFIG } from "../config/tools"
+import { useToolCatalogSearch } from "../hooks/useToolCatalogSearch"
 import "./MainLayout.scss"
 
 const MainLayout: React.FC = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const { mode, toggleTheme } = useThemeStore()
-  const [toolQuery, setToolQuery] = useState("")
-
-  const filteredToolGroups = useMemo(() => {
-    const query = toolQuery.trim().toLowerCase()
-    const groups = new Map<string, typeof TOOLS_CONFIG>()
-
-    TOOLS_CONFIG.forEach((tool) => {
-      const searchableText =
-        `${tool.title} ${tool.description} ${tool.category ?? ""}`.toLowerCase()
-      if (query && !searchableText.includes(query)) return
-
-      const category = tool.category ?? "Other"
-      const group = groups.get(category) ?? []
-      group.push(tool)
-      groups.set(category, group)
-    })
-
-    return Array.from(groups.entries())
-  }, [toolQuery])
+  const {
+    query: toolQuery,
+    setQuery: setToolQuery,
+    groups: filteredToolGroups
+  } = useToolCatalogSearch()
 
   const menuItems: MenuProps["items"] = [
     {

@@ -1,10 +1,11 @@
-import { Card, Typography } from "antd"
+import { Typography } from "antd"
+import ToolCard from "../../../../components/tool/ToolCard"
 
 const { Paragraph, Text } = Typography
 
 export default function UrlGuide() {
   return (
-    <Card className="url-guide-card" bordered={false}>
+    <ToolCard className="url-guide-card" bordered={false}>
       <div className="url-guide-heading">
         <div>
           <Text className="eyebrow">REFERENCE</Text>
@@ -35,6 +36,6 @@ export default function UrlGuide() {
           </Paragraph>
         </div>
       </div>
-    </Card>
+    </ToolCard>
   )
 }

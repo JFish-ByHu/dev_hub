@@ -1,4 +1,5 @@
-import { Button, Card, Select, Space, Tag, Typography } from "antd"
+import { Button, Select, Space, Tag, Typography } from "antd"
+import ToolCard from "../../../../components/tool/ToolCard"
 import { ThunderboltOutlined } from "@ant-design/icons"
 import CopyButton from "../../../../components/CopyButton"
 import { flagsToString, REGEX_PRESETS, type RegexPreset } from "../utils/regex"
@@ -17,7 +18,7 @@ export default function RegexPresets({
   onUsePreset
 }: RegexPresetsProps) {
   return (
-    <Card className="regex-presets-card" bordered={false}>
+    <ToolCard className="regex-presets-card" bordered={false}>
       <div className="regex-presets-heading">
         <div>
           <Text className="eyebrow">STARTER TEMPLATES</Text>
@@ -59,6 +60,6 @@ export default function RegexPresets({
           </Button>
         </Space>
       </div>
-    </Card>
+    </ToolCard>
   )
 }

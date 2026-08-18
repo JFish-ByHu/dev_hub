@@ -1,4 +1,5 @@
-import { Button, Card, Divider, Typography } from "antd"
+import { Button, Divider, Typography } from "antd"
+import ToolCard from "../../../../components/tool/ToolCard"
 import { ReloadOutlined } from "@ant-design/icons"
 import CopyButton from "../../../../components/CopyButton"
 import {
@@ -17,7 +18,7 @@ interface CurrentTimeCardProps {
 
 export default function CurrentTimeCard({ now, onRefresh }: CurrentTimeCardProps) {
   return (
-    <Card className="timestamp-now-card" bordered={false}>
+    <ToolCard className="timestamp-now-card" bordered={false}>
       <div className="now-card-heading">
         <div>
           <Text className="eyebrow">CURRENT TIME</Text>
@@ -49,6 +50,6 @@ export default function CurrentTimeCard({ now, onRefresh }: CurrentTimeCardProps
         <Text type="secondary">Local: {formatDateTime(now, "local")}</Text>
         <Text type="secondary">UTC: {formatDateTime(now, "utc")}</Text>
       </div>
-    </Card>
+    </ToolCard>
   )
 }

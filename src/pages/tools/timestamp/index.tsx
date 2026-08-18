@@ -1,5 +1,6 @@
 import { Tag } from "antd"
 import { ClockCircleOutlined } from "@ant-design/icons"
+import ToolPageHeader from "../../../components/tool/ToolPageHeader"
 import CurrentTimeCard from "./components/CurrentTimeCard"
 import DateToTimestampCard from "./components/DateToTimestampCard"
 import TimestampGuide from "./components/TimestampGuide"
@@ -12,18 +13,15 @@ export default function TimestampTool() {
 
   return (
     <div className="timestamp-tool-page">
-      <div className="tool-header">
-        <div>
-          <h1 className="tool-title">Timestamp Converter</h1>
-          <p className="tool-desc">
-            Convert Unix timestamps and human-readable dates with precise units, timezone control,
-            ISO output, and relative-time context.
-          </p>
-        </div>
-        <Tag icon={<ClockCircleOutlined />} color="blue">
-          Runs locally in your browser
-        </Tag>
-      </div>
+      <ToolPageHeader
+        title="Timestamp Converter"
+        description="Convert Unix timestamps and human-readable dates with precise units, timezone control, ISO output, and relative-time context."
+        extra={
+          <Tag icon={<ClockCircleOutlined />} color="blue">
+            Runs locally in your browser
+          </Tag>
+        }
+      />
 
       <CurrentTimeCard now={timestamp.now} onRefresh={() => timestamp.setNow(new Date())} />
 

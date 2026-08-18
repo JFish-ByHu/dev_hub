@@ -1,5 +1,6 @@
 import { Tag } from "antd"
 import { BgColorsOutlined } from "@ant-design/icons"
+import ToolPageHeader from "../../../components/tool/ToolPageHeader"
 import ColorGuide from "./components/ColorGuide"
 import ColorInputCard from "./components/ColorInputCard"
 import ColorValuesCard from "./components/ColorValuesCard"
@@ -12,18 +13,15 @@ export default function ColorTool() {
 
   return (
     <div className="color-tool-page">
-      <div className="tool-header">
-        <div>
-          <h1 className="tool-title">Color Converter & Contrast Checker</h1>
-          <p className="tool-desc">
-            Convert HEX, RGB, and HSL colors, then verify foreground and background contrast against
-            WCAG accessibility thresholds.
-          </p>
-        </div>
-        <Tag icon={<BgColorsOutlined />} color="blue">
-          WCAG 2.x contrast
-        </Tag>
-      </div>
+      <ToolPageHeader
+        title="Color Converter & Contrast Checker"
+        description="Convert HEX, RGB, and HSL colors, then verify foreground and background contrast against WCAG accessibility thresholds."
+        extra={
+          <Tag icon={<BgColorsOutlined />} color="blue">
+            WCAG 2.x contrast
+          </Tag>
+        }
+      />
 
       <ColorInputCard
         foreground={color.foreground}

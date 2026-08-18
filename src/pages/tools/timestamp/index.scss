@@ -5,26 +5,6 @@
   flex-direction: column;
   gap: 24px;
   padding-bottom: 40px;
-
-  .tool-header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 24px;
-    margin-bottom: 0;
-  }
-
-  .tool-title {
-    margin-bottom: 8px;
-  }
-}
-
-.timestamp-now-card,
-.timestamp-card,
-.timestamp-guide-card {
-  background-color: theme-var(surface) !important;
-  border-radius: $radius-lg !important;
-  border: 1px solid theme-var(border);
 }
 
 .timestamp-now-card {
@@ -313,7 +293,7 @@
 
 @media (max-width: 600px) {
   .timestamp-tool-page {
-    .tool-header,
+    .tool-page-header,
     .now-card-heading,
     .guide-heading {
       flex-direction: column;

@@ -12,6 +12,11 @@ export const JSON_EXAMPLE = JSON.stringify(
   2
 )
 
+export const MAX_JSON_INPUT_CHARACTERS = 2_000_000
+
+export type { JsonTreeMeta, JsonTreeNode } from "./jsonTree"
+import { buildJsonTree, type JsonTreeMeta, type JsonTreeNode } from "./jsonTree"
+
 export interface JsonParseSuccess {
   ok: true
   data: unknown
@@ -23,6 +28,18 @@ export interface JsonParseFailure {
 }
 
 export type JsonParseResult = JsonParseSuccess | JsonParseFailure
+
+export type JsonAnalysis =
+  | { kind: "empty" }
+  | { kind: "pending" }
+  | { kind: "error"; error: string }
+  | {
+      kind: "success"
+      formatted: string
+      minified: string
+      tree: JsonTreeNode
+      treeMeta: JsonTreeMeta
+    }
 
 export function parseJson(value: string): JsonParseResult {
   if (!value.trim()) {
@@ -36,6 +53,28 @@ export function parseJson(value: string): JsonParseResult {
       ok: false,
       error: error instanceof Error ? error.message : "Invalid JSON format"
     }
+  }
+}
+
+export function analyzeJson(value: string): JsonAnalysis {
+  if (!value.trim()) return { kind: "empty" }
+  if (value.length > MAX_JSON_INPUT_CHARACTERS) {
+    return {
+      kind: "error",
+      error: `JSON input is limited to ${MAX_JSON_INPUT_CHARACTERS.toLocaleString()} characters.`
+    }
+  }
+
+  const parsed = parseJson(value)
+  if (!parsed.ok) return { kind: "error", error: parsed.error }
+
+  const tree = buildJsonTree(parsed.data)
+  return {
+    kind: "success",
+    formatted: serializeJson(parsed.data, true),
+    minified: serializeJson(parsed.data, false),
+    tree: tree.root,
+    treeMeta: tree.meta
   }
 }
 

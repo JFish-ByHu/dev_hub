@@ -1,6 +1,8 @@
-import { Alert, Button, Card, Divider, Empty, Space, Tag, Typography } from "antd"
+import { Alert, Button, Divider, Empty, Space, Tag, Typography } from "antd"
+import ToolCard from "../../../../components/tool/ToolCard"
 import { CheckCircleOutlined, ClearOutlined, DownloadOutlined } from "@ant-design/icons"
 import CopyButton from "../../../../components/CopyButton"
+import { downloadFile } from "../../../../utils/download"
 import type { UuidVersion } from "../utils/uuid"
 
 const { Text } = Typography
@@ -12,20 +14,14 @@ interface UuidResultCardProps {
 }
 
 function downloadValues(values: string[]) {
-  const blob = new Blob([`${values.join("\n")}\n`], { type: "text/plain;charset=utf-8" })
-  const url = URL.createObjectURL(blob)
-  const anchor = document.createElement("a")
-  anchor.href = url
-  anchor.download = "devhub-uuids.txt"
-  anchor.click()
-  URL.revokeObjectURL(url)
+  downloadFile(`${values.join("\n")}\n`, "devhub-uuids.txt", "text/plain;charset=utf-8")
 }
 
 export default function UuidResultCard({ version, values, onClear }: UuidResultCardProps) {
   const allValues = values.join("\n")
 
   return (
-    <Card
+    <ToolCard
       title="Generated IDs"
       extra={values.length ? <Tag color="green">Ready</Tag> : <Tag>Waiting</Tag>}
       className="uuid-card"
@@ -74,6 +70,6 @@ export default function UuidResultCard({ version, values, onClear }: UuidResultC
           </div>
         </>
       )}
-    </Card>
+    </ToolCard>
   )
 }

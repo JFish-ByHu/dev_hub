@@ -1,6 +1,11 @@
 import { Button, Checkbox, Input, Space, Typography } from "antd"
 import { ClearOutlined, CodeOutlined, ExperimentOutlined } from "@ant-design/icons"
-import { REGEX_FLAG_OPTIONS, type RegexFlagKey, type RegexFlags } from "../utils/regex"
+import {
+  MAX_REGEX_PATTERN_CHARACTERS,
+  REGEX_FLAG_OPTIONS,
+  type RegexFlagKey,
+  type RegexFlags
+} from "../utils/regex"
 
 const { Text } = Typography
 
@@ -69,7 +74,8 @@ export default function RegexOptions({
         </Button>
       </div>
       <Text className="regex-option-hint" type="secondary">
-        <CodeOutlined /> Changes are analyzed locally as you type.
+        <CodeOutlined /> Changes are analyzed in a worker. Patterns are limited to{" "}
+        {MAX_REGEX_PATTERN_CHARACTERS.toLocaleString()} characters.
       </Text>
     </div>
   )

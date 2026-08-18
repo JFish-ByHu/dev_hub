@@ -20,6 +20,8 @@ export type TimestampResult =
       iso: string
       relative: string
       timezone: string
+      normalized: string
+      subMillisecondNanoseconds: string
     }
 
 export type DateResult =
@@ -54,11 +56,13 @@ export function useTimestampConversion() {
 
     return {
       ok: true,
-      date: result.value,
-      formatted: formatDateTime(result.value, timestampTimezone),
-      iso: result.value.toISOString(),
-      relative: formatRelativeTime(result.value, now.getTime()),
-      timezone: formatTimezone(result.value, timestampTimezone)
+      date: result.value.date,
+      formatted: formatDateTime(result.value.date, timestampTimezone),
+      iso: result.value.date.toISOString(),
+      relative: formatRelativeTime(result.value.date, now.getTime()),
+      timezone: formatTimezone(result.value.date, timestampTimezone),
+      normalized: result.value.normalized,
+      subMillisecondNanoseconds: result.value.subMillisecondNanoseconds.toString()
     }
   }, [now, timestampInput, timestampTimezone, timestampUnit])
 

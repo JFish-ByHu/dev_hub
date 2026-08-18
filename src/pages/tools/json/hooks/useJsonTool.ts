@@ -1,94 +1,105 @@
 import { useMemo, useState } from "react"
 import { message } from "antd"
-import { JSON_EXAMPLE, getJsonStats, parseJson, serializeJson } from "../utils/json"
+import { useDebouncedWorkerTask } from "../../../../hooks/useDebouncedWorkerTask"
+import {
+  JSON_EXAMPLE,
+  MAX_JSON_INPUT_CHARACTERS,
+  getJsonStats,
+  type JsonAnalysis
+} from "../utils/json"
+import { downloadFile, MAX_TOOL_FILE_SIZE } from "../../../../utils/download"
+
+const EMPTY_ANALYSIS: JsonAnalysis = { kind: "empty" }
+const JSON_WORKER_URL = new URL("../workers/jsonWorker.ts", import.meta.url)
+const JSON_WORKER_ERROR: JsonAnalysis = {
+  kind: "error",
+  error: "The JSON worker could not finish parsing this input."
+}
+const JSON_TIMEOUT_ERROR: JsonAnalysis = {
+  kind: "error",
+  error: "The JSON input took too long to analyze."
+}
 
 export function useJsonTool() {
   const [inputVal, setInputVal] = useState("")
-  const [parsedData, setParsedData] = useState<unknown | undefined>(undefined)
-  const [error, setError] = useState<string | null>(null)
+  const workerInput =
+    inputVal.trim() && inputVal.length <= MAX_JSON_INPUT_CHARACTERS ? inputVal : null
+  const { data: workerAnalysis, isPending } = useDebouncedWorkerTask<string, JsonAnalysis>({
+    input: workerInput,
+    workerUrl: JSON_WORKER_URL,
+    timeout: 2000,
+    workerError: JSON_WORKER_ERROR,
+    timeoutError: JSON_TIMEOUT_ERROR
+  })
 
-  const parseAndSet = (value: string) => {
-    setInputVal(value)
-    const result = parseJson(value)
-    if (result.ok) {
-      setParsedData(result.data)
-      setError(null)
-    } else if (!value.trim()) {
-      setParsedData(undefined)
-      setError(null)
-    } else {
-      setParsedData(undefined)
-      setError(result.error)
+  const analysis = useMemo<JsonAnalysis>(() => {
+    if (!inputVal.trim()) return EMPTY_ANALYSIS
+    if (inputVal.length > MAX_JSON_INPUT_CHARACTERS) {
+      return {
+        kind: "error",
+        error: `JSON input is limited to ${MAX_JSON_INPUT_CHARACTERS.toLocaleString()} characters.`
+      }
     }
-    return result
-  }
+    if (isPending || !workerAnalysis) return { kind: "pending" }
+    return workerAnalysis
+  }, [inputVal, isPending, workerAnalysis])
 
-  const clearJson = () => {
-    setInputVal("")
-    setParsedData(undefined)
-    setError(null)
-  }
+  const setInput = (value: string) => setInputVal(value)
+
+  const clearJson = () => setInput("")
 
   const formatJson = () => {
-    if (!isValid) return
-    setInputVal(serializeJson(parsedData, true))
+    if (analysis.kind !== "success") return
+    setInput(analysis.formatted)
     message.success("JSON formatted successfully")
   }
 
   const minifyJson = () => {
-    if (!isValid) return
-    setInputVal(serializeJson(parsedData, false))
+    if (analysis.kind !== "success") return
+    setInput(analysis.minified)
     message.success("JSON minified successfully")
   }
 
   const downloadJson = () => {
-    if (!isValid) return
-    const blob = new Blob([serializeJson(parsedData, true)], { type: "application/json" })
-    const url = URL.createObjectURL(blob)
-    const anchor = document.createElement("a")
-    anchor.href = url
-    anchor.download = "formatted.json"
-    anchor.click()
-    URL.revokeObjectURL(url)
+    if (analysis.kind !== "success") return
+    downloadFile(analysis.formatted, "formatted.json", "application/json")
     message.success("JSON file downloaded")
   }
 
   const loadExample = () => {
-    parseAndSet(JSON_EXAMPLE)
+    setInput(JSON_EXAMPLE)
     message.success("Example JSON loaded")
   }
 
   const processFile = async (file: File) => {
+    if (file.size > MAX_TOOL_FILE_SIZE) {
+      message.error("JSON files must be smaller than 10 MB.")
+      return
+    }
+
     try {
-      const content = await file.text()
-      const result = parseAndSet(content)
-      if (result.ok) {
-        message.success("File parsed successfully")
-      } else {
-        message.error("Failed to parse file: Invalid JSON")
-      }
+      setInput(await file.text())
+      message.success("File loaded; validating JSON")
     } catch {
-      setError("Unable to read this file.")
-      setParsedData(undefined)
       message.error("Failed to read file")
     }
   }
 
-  const isValid = parsedData !== undefined && error === null
+  const isValid = analysis.kind === "success"
   const formattedJson = useMemo(
-    () => (isValid ? serializeJson(parsedData, true) : ""),
-    [isValid, parsedData]
+    () => (analysis.kind === "success" ? analysis.formatted : ""),
+    [analysis]
   )
   const stats = useMemo(() => getJsonStats(inputVal), [inputVal])
 
   return {
     inputVal,
-    parsedData,
-    error,
+    analysis,
+    isParsing: isPending && workerInput !== null,
     isValid,
     formattedJson,
     stats,
-    parseAndSet,
+    setInput,
     processFile,
     formatJson,
     minifyJson,

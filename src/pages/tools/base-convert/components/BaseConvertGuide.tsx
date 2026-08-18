@@ -1,10 +1,11 @@
-import { Card, Typography } from "antd"
+import { Typography } from "antd"
+import ToolCard from "../../../../components/tool/ToolCard"
 
 const { Paragraph, Text } = Typography
 
 export default function BaseConvertGuide() {
   return (
-    <Card className="base-convert-guide-card" bordered={false}>
+    <ToolCard className="base-convert-guide-card" bordered={false}>
       <div className="base-convert-guide-heading">
         <div>
           <Text className="eyebrow">REFERENCE</Text>
@@ -34,6 +35,6 @@ export default function BaseConvertGuide() {
           </Paragraph>
         </div>
       </div>
-    </Card>
+    </ToolCard>
   )
 }

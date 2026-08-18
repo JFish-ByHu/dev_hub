@@ -1,10 +1,11 @@
-import { Card, Typography } from "antd"
+import { Typography } from "antd"
+import ToolCard from "../../../../components/tool/ToolCard"
 
 const { Paragraph, Text } = Typography
 
 export default function ColorGuide() {
   return (
-    <Card className="color-guide-card" bordered={false}>
+    <ToolCard className="color-guide-card" bordered={false}>
       <div className="color-guide-heading">
         <div>
           <Text className="eyebrow">REFERENCE</Text>
@@ -37,6 +38,6 @@ export default function ColorGuide() {
           </Paragraph>
         </div>
       </div>
-    </Card>
+    </ToolCard>
   )
 }

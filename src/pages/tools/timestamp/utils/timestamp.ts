@@ -29,40 +29,95 @@ export const TIMEZONE_OPTIONS: Array<{ value: TimezoneMode; label: string }> = [
   { value: "utc", label: "UTC" }
 ]
 
-const UNIT_TO_MILLISECONDS: Record<TimestampUnit, number> = {
-  seconds: 1000,
-  milliseconds: 1,
-  microseconds: 0.001,
-  nanoseconds: 0.000001
+const UNIT_TO_NANOSECONDS: Record<TimestampUnit, bigint> = {
+  seconds: 1000000000n,
+  milliseconds: 1000000n,
+  microseconds: 1000n,
+  nanoseconds: 1n
 }
 
-const UNIT_TO_SUBMILLISECONDS: Record<TimestampUnit, bigint> = {
-  seconds: 1000n,
-  milliseconds: 1n,
-  microseconds: 1000n,
-  nanoseconds: 1000000n
+const MAX_FRACTION_DIGITS: Record<TimestampUnit, number> = {
+  seconds: 9,
+  milliseconds: 6,
+  microseconds: 3,
+  nanoseconds: 0
 }
+
+const NANOSECONDS_PER_MILLISECOND = 1000000n
+const MIN_DATE_MILLISECONDS = -8640000000000000n
+const MAX_DATE_MILLISECONDS = 8640000000000000n
+const MIN_DATE_NANOSECONDS = MIN_DATE_MILLISECONDS * NANOSECONDS_PER_MILLISECOND
+const MAX_DATE_NANOSECONDS = MAX_DATE_MILLISECONDS * NANOSECONDS_PER_MILLISECOND
 
 const pad = (value: number, length = 2) => String(value).padStart(length, "0")
 
-export function parseTimestampInput(input: string, unit: TimestampUnit): ParseResult<Date> {
+export interface ParsedTimestamp {
+  date: Date
+  normalized: string
+  subMillisecondNanoseconds: bigint
+}
+
+function formatTimestampNanoseconds(value: bigint, unit: TimestampUnit): string {
+  const sign = value < 0n ? "-" : ""
+  const absoluteValue = value < 0n ? -value : value
+  const unitNanoseconds = UNIT_TO_NANOSECONDS[unit]
+  const whole = absoluteValue / unitNanoseconds
+  const remainder = absoluteValue % unitNanoseconds
+
+  if (remainder === 0n) return `${sign}${whole}`
+
+  const fraction = remainder.toString().padStart(MAX_FRACTION_DIGITS[unit], "0").replace(/0+$/, "")
+  return `${sign}${whole}.${fraction}`
+}
+
+export function parseTimestampInput(
+  input: string,
+  unit: TimestampUnit
+): ParseResult<ParsedTimestamp> {
   const value = input.trim()
   if (!value) {
     return { ok: false, error: "Enter a timestamp to convert." }
   }
 
-  const numericValue = Number(value)
-  if (!Number.isFinite(numericValue)) {
-    return { ok: false, error: "Timestamp must be a finite number." }
+  const match = /^([+-]?)(\d+)(?:\.(\d+))?$/.exec(value)
+  if (!match) {
+    return { ok: false, error: "Timestamp must be a decimal number without exponent notation." }
   }
 
-  const milliseconds = numericValue * UNIT_TO_MILLISECONDS[unit]
-  const date = new Date(milliseconds)
-  if (!Number.isFinite(milliseconds) || Number.isNaN(date.getTime())) {
+  const sign = match[1] === "-" ? -1n : 1n
+  const whole = BigInt(match[2])
+  const fraction = match[3] ?? ""
+  if (fraction.length > MAX_FRACTION_DIGITS[unit]) {
+    return {
+      ok: false,
+      error: `${TIMESTAMP_UNIT_OPTIONS.find((option) => option.value === unit)?.label ?? unit} supports up to ${MAX_FRACTION_DIGITS[unit]} decimal places.`
+    }
+  }
+
+  const unitNanoseconds = UNIT_TO_NANOSECONDS[unit]
+  const fractionNanoseconds = fraction
+    ? BigInt(fraction) * (unitNanoseconds / 10n ** BigInt(fraction.length))
+    : 0n
+  const nanoseconds = sign * (whole * unitNanoseconds + fractionNanoseconds)
+  const milliseconds = nanoseconds / NANOSECONDS_PER_MILLISECOND
+
+  if (nanoseconds < MIN_DATE_NANOSECONDS || nanoseconds > MAX_DATE_NANOSECONDS) {
     return { ok: false, error: "This timestamp is outside the supported date range." }
   }
 
-  return { ok: true, value: date }
+  const date = new Date(Number(milliseconds))
+  if (Number.isNaN(date.getTime())) {
+    return { ok: false, error: "This timestamp is outside the supported date range." }
+  }
+
+  return {
+    ok: true,
+    value: {
+      date,
+      normalized: formatTimestampNanoseconds(nanoseconds, unit),
+      subMillisecondNanoseconds: nanoseconds % NANOSECONDS_PER_MILLISECOND
+    }
+  }
 }
 
 export function parseDateTimeInput(input: string, timezone: TimezoneMode): ParseResult<Date> {
@@ -132,13 +187,7 @@ export function formatDateTimeInput(date: Date, timezone: TimezoneMode): string 
 }
 
 export function formatTimestamp(date: Date, unit: TimestampUnit): string {
-  const milliseconds = BigInt(date.getTime())
-  if (unit === "seconds") {
-    const seconds = Number(milliseconds) / 1000
-    return Number.isInteger(seconds) ? String(seconds) : seconds.toFixed(3).replace(/0+$/, "")
-  }
-
-  return (milliseconds * UNIT_TO_SUBMILLISECONDS[unit]).toString()
+  return formatTimestampNanoseconds(BigInt(date.getTime()) * NANOSECONDS_PER_MILLISECOND, unit)
 }
 
 export function formatTimezone(date: Date, timezone: TimezoneMode): string {

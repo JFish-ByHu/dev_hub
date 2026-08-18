@@ -1,4 +1,5 @@
-import { Alert, Button, Card, Divider, Input, Select, Tag } from "antd"
+import { Alert, Button, Divider, Input, Select, Tag } from "antd"
+import ToolCard from "../../../../components/tool/ToolCard"
 import { CheckCircleOutlined, ThunderboltOutlined } from "@ant-design/icons"
 import {
   TIMESTAMP_UNIT_OPTIONS,
@@ -31,7 +32,7 @@ export default function TimestampToDateCard({
   onUseCurrent
 }: TimestampToDateCardProps) {
   return (
-    <Card
+    <ToolCard
       title="Timestamp → Date & Time"
       extra={<Tag color="purple">Unix timestamp</Tag>}
       className="timestamp-card"
@@ -84,6 +85,13 @@ export default function TimestampToDateCard({
           </div>
           <TimestampResultRow label="Date and time" value={result.formatted} />
           <TimestampResultRow label="ISO 8601" value={result.iso} />
+          <TimestampResultRow label={`Canonical (${unit})`} value={result.normalized} />
+          {result.subMillisecondNanoseconds !== "0" && (
+            <TimestampResultRow
+              label="Sub-millisecond remainder"
+              value={`${result.subMillisecondNanoseconds} ns`}
+            />
+          )}
           <TimestampResultRow label="Relative" value={result.relative} copyable={false} />
         </div>
       ) : (
@@ -94,6 +102,6 @@ export default function TimestampToDateCard({
           showIcon
         />
       )}
-    </Card>
+    </ToolCard>
   )
 }

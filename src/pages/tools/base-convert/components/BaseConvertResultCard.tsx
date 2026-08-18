@@ -1,4 +1,5 @@
-import { Alert, Card, Divider, Tag, Typography } from "antd"
+import { Alert, Divider, Tag, Typography } from "antd"
+import ToolCard from "../../../../components/tool/ToolCard"
 import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons"
 import CopyButton from "../../../../components/CopyButton"
 import type { BaseConvertResult } from "../hooks/useBaseConvert"
@@ -11,7 +12,7 @@ interface BaseConvertResultCardProps {
 
 export default function BaseConvertResultCard({ conversion }: BaseConvertResultCardProps) {
   return (
-    <Card
+    <ToolCard
       title="Converted Values"
       extra={conversion.kind === "success" ? <Tag color="green">Ready</Tag> : <Tag>Waiting</Tag>}
       className="base-convert-card"
@@ -71,6 +72,6 @@ export default function BaseConvertResultCard({ conversion }: BaseConvertResultC
           </div>
         </>
       )}
-    </Card>
+    </ToolCard>
   )
 }

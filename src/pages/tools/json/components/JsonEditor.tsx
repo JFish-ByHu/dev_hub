@@ -1,6 +1,7 @@
 import { useState } from "react"
 import type { DragEvent } from "react"
-import { Button, Card, Space, Typography, Upload, Input } from "antd"
+import { Button, Space, Typography, Upload, Input } from "antd"
+import ToolCard from "../../../../components/tool/ToolCard"
 import {
   BulbOutlined,
   ClearOutlined,
@@ -9,6 +10,7 @@ import {
   UploadOutlined
 } from "@ant-design/icons"
 import CopyButton from "../../../../components/CopyButton"
+import { MAX_JSON_INPUT_CHARACTERS } from "../utils/json"
 
 const { TextArea } = Input
 const { Text } = Typography
@@ -56,7 +58,7 @@ export default function JsonEditor({
   }
 
   return (
-    <Card title="Raw JSON Input" className="json-card" bordered={false}>
+    <ToolCard title="Raw JSON Input" className="json-card" bordered={false}>
       <Space className="toolbar" wrap style={{ marginBottom: 16 }}>
         <Button
           type="primary"
@@ -119,6 +121,10 @@ export default function JsonEditor({
         {!isValid && inputVal.trim() && <Text type="warning">Invalid JSON</Text>}
         {isValid && <Text type="success">Valid JSON</Text>}
       </div>
-    </Card>
+      <Text type="secondary">
+        Live validation waits briefly after typing. Input is limited to{" "}
+        {MAX_JSON_INPUT_CHARACTERS.toLocaleString()} characters.
+      </Text>
+    </ToolCard>
   )
 }

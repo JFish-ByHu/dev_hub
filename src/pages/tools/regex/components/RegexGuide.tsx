@@ -1,10 +1,11 @@
-import { Card, Typography } from "antd"
+import { Typography } from "antd"
+import ToolCard from "../../../../components/tool/ToolCard"
 
 const { Paragraph, Text } = Typography
 
 export default function RegexGuide() {
   return (
-    <Card className="regex-guide-card" bordered={false}>
+    <ToolCard className="regex-guide-card" bordered={false}>
       <div className="regex-guide-heading">
         <div>
           <Text className="eyebrow">REFERENCE</Text>
@@ -37,6 +38,6 @@ export default function RegexGuide() {
           </Paragraph>
         </div>
       </div>
-    </Card>
+    </ToolCard>
   )
 }

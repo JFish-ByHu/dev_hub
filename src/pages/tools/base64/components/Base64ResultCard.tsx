@@ -1,8 +1,10 @@
-import { Alert, Button, Card, Divider, Input, Space, Tag, Typography } from "antd"
+import { Alert, Button, Divider, Input, Space, Tag, Typography } from "antd"
+import ToolCard from "../../../../components/tool/ToolCard"
 import { CheckCircleOutlined, CloseCircleOutlined, DownloadOutlined } from "@ant-design/icons"
 import type { ConversionResult } from "../hooks/useBase64Conversion"
 import { formatByteSize } from "../utils/base64"
 import CopyButton from "../../../../components/CopyButton"
+import { downloadFile } from "../../../../utils/download"
 
 const { TextArea } = Input
 const { Text } = Typography
@@ -14,19 +16,6 @@ interface Base64ResultCardProps {
   sourceFileName: string | null
 }
 
-function downloadValue(value: string | Uint8Array, filename: string, type: string) {
-  const blob =
-    typeof value === "string"
-      ? new Blob([value], { type })
-      : new Blob([value.buffer as ArrayBuffer], { type })
-  const url = URL.createObjectURL(blob)
-  const anchor = document.createElement("a")
-  anchor.href = url
-  anchor.download = filename
-  anchor.click()
-  URL.revokeObjectURL(url)
-}
-
 export default function Base64ResultCard({
   conversion,
   outputValue,
@@ -34,7 +23,7 @@ export default function Base64ResultCard({
   sourceFileName
 }: Base64ResultCardProps) {
   return (
-    <Card
+    <ToolCard
       title="Conversion Result"
       extra={
         conversion.kind === "encode" || conversion.kind === "decode" ? (
@@ -92,13 +81,13 @@ export default function Base64ResultCard({
                 icon={<DownloadOutlined />}
                 onClick={() => {
                   if (conversion.kind === "encode") {
-                    downloadValue(
+                    downloadFile(
                       conversion.output,
                       `${sourceFileName ?? "encoded"}.base64.txt`,
                       "text/plain"
                     )
                   } else {
-                    downloadValue(conversion.bytes, "decoded.bin", "application/octet-stream")
+                    downloadFile(conversion.bytes, "decoded.bin", "application/octet-stream")
                   }
                 }}
               >
@@ -113,6 +102,6 @@ export default function Base64ResultCard({
           </div>
         </>
       )}
-    </Card>
+    </ToolCard>
   )
 }

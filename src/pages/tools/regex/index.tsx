@@ -1,5 +1,6 @@
 import { Tag } from "antd"
 import { SearchOutlined } from "@ant-design/icons"
+import ToolPageHeader from "../../../components/tool/ToolPageHeader"
 import RegexGuide from "./components/RegexGuide"
 import RegexOptions from "./components/RegexOptions"
 import RegexPresets from "./components/RegexPresets"
@@ -13,18 +14,15 @@ export default function RegexTool() {
 
   return (
     <div className="regex-tool-page">
-      <div className="tool-header">
-        <div>
-          <h1 className="tool-title">Regex Tester & Generator</h1>
-          <p className="tool-desc">
-            Test JavaScript regular expressions against sample text, inspect captures, preview
-            replacements, and start from practical templates.
-          </p>
-        </div>
-        <Tag icon={<SearchOutlined />} color="blue">
-          JavaScript RegExp
-        </Tag>
-      </div>
+      <ToolPageHeader
+        title="Regex Tester & Generator"
+        description="Test JavaScript regular expressions against sample text, inspect captures, preview replacements, and start from practical templates."
+        extra={
+          <Tag icon={<SearchOutlined />} color="blue">
+            JavaScript RegExp
+          </Tag>
+        }
+      />
 
       <RegexOptions
         pattern={tester.pattern}
@@ -42,7 +40,7 @@ export default function RegexTool() {
           onTestTextChange={tester.setTestText}
           onReplacementChange={tester.setReplacement}
         />
-        <RegexResultCard analysis={tester.analysis} />
+        <RegexResultCard analysis={tester.analysis} isAnalyzing={tester.isAnalyzing} />
       </div>
 
       <RegexPresets

@@ -1,10 +1,11 @@
-import { Card, Typography } from "antd"
+import { Typography } from "antd"
+import ToolCard from "../../../../components/tool/ToolCard"
 
 const { Paragraph, Text } = Typography
 
 export default function Base64Guide() {
   return (
-    <Card className="base64-guide-card" bordered={false}>
+    <ToolCard className="base64-guide-card" bordered={false}>
       <div className="guide-heading">
         <div>
           <Text className="eyebrow">REFERENCE</Text>
@@ -36,6 +37,6 @@ export default function Base64Guide() {
           </Paragraph>
         </div>
       </div>
-    </Card>
+    </ToolCard>
   )
 }

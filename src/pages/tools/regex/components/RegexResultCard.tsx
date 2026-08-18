@@ -1,4 +1,5 @@
-import { Alert, Card, Divider, Empty, Input, Tag, Typography } from "antd"
+import { Alert, Divider, Empty, Input, Tag, Typography } from "antd"
+import ToolCard from "../../../../components/tool/ToolCard"
 import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons"
 import type { RegexAnalysis } from "../utils/regex"
 import CopyButton from "../../../../components/CopyButton"
@@ -8,14 +9,17 @@ const { Text } = Typography
 
 interface RegexResultCardProps {
   analysis: RegexAnalysis
+  isAnalyzing: boolean
 }
 
-export default function RegexResultCard({ analysis }: RegexResultCardProps) {
+export default function RegexResultCard({ analysis, isAnalyzing }: RegexResultCardProps) {
   return (
-    <Card
+    <ToolCard
       title="Match results"
       extra={
-        analysis.kind === "success" ? (
+        isAnalyzing ? (
+          <Tag color="blue">Testing...</Tag>
+        ) : analysis.kind === "success" ? (
           <Tag color="green">Valid expression</Tag>
         ) : analysis.kind === "error" ? (
           <Tag color="red">Invalid expression</Tag>
@@ -124,6 +128,6 @@ export default function RegexResultCard({ analysis }: RegexResultCardProps) {
           </div>
         </>
       )}
-    </Card>
+    </ToolCard>
   )
 }

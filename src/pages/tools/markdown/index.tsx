@@ -2,6 +2,7 @@ import { Tag } from "antd"
 import { FileMarkdownOutlined } from "@ant-design/icons"
 import { useRef, useState } from "react"
 import type { TextAreaRef } from "antd/es/input/TextArea"
+import ToolPageHeader from "../../../components/tool/ToolPageHeader"
 import MarkdownEditorCard from "./components/MarkdownEditorCard"
 import MarkdownGuide from "./components/MarkdownGuide"
 import MarkdownPreviewCard from "./components/MarkdownPreviewCard"
@@ -39,18 +40,15 @@ export default function MarkdownTool() {
 
   return (
     <div className="markdown-tool-page">
-      <div className="tool-header">
-        <div>
-          <h1 className="tool-title">Markdown Editor & Preview</h1>
-          <p className="tool-desc">
-            Write GitHub Flavored Markdown, preview the result live, and download a clean Markdown
-            document locally.
-          </p>
-        </div>
-        <Tag icon={<FileMarkdownOutlined />} color="blue">
-          GFM · Sanitized preview
-        </Tag>
-      </div>
+      <ToolPageHeader
+        title="Markdown Editor & Preview"
+        description="Write GitHub Flavored Markdown, preview the result live, and download a clean Markdown document locally."
+        extra={
+          <Tag icon={<FileMarkdownOutlined />} color="blue">
+            GFM · Sanitized preview
+          </Tag>
+        }
+      />
 
       <div className="markdown-editor-grid">
         <MarkdownEditorCard

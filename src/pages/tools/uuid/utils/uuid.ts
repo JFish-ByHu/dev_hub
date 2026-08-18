@@ -23,11 +23,52 @@ export const UUID_VERSION_OPTIONS: Array<{
 ]
 
 const UUID_HEX_GROUPS = [4, 2, 2, 2, 6]
+const MAX_UUID_V7_TIMESTAMP = 0xffffffffffff
+const MAX_UUID_V7_RANDOM = (1n << 74n) - 1n
+
+let lastV7Timestamp = -1
+let lastV7Random = 0n
 
 function getRandomBytes(length: number) {
   const bytes = new Uint8Array(length)
   crypto.getRandomValues(bytes)
   return bytes
+}
+
+function getRandomV7Tail() {
+  const bytes = getRandomBytes(10)
+  let value = 0n
+  bytes.forEach((byte) => {
+    value = (value << 8n) | BigInt(byte)
+  })
+  return value & MAX_UUID_V7_RANDOM
+}
+
+function getMonotonicV7Values(timestamp: number) {
+  if (!Number.isSafeInteger(timestamp) || timestamp < 0 || timestamp > MAX_UUID_V7_TIMESTAMP) {
+    throw new RangeError("UUID v7 timestamps must be a non-negative millisecond value in range.")
+  }
+
+  let monotonicTimestamp = Math.max(timestamp, lastV7Timestamp)
+  let randomTail: bigint
+
+  if (monotonicTimestamp === lastV7Timestamp) {
+    if (lastV7Random === MAX_UUID_V7_RANDOM) {
+      monotonicTimestamp += 1
+      if (monotonicTimestamp > MAX_UUID_V7_TIMESTAMP) {
+        throw new RangeError("UUID v7 timestamp is outside the supported range.")
+      }
+      randomTail = getRandomV7Tail()
+    } else {
+      randomTail = lastV7Random + 1n
+    }
+  } else {
+    randomTail = getRandomV7Tail()
+  }
+
+  lastV7Timestamp = monotonicTimestamp
+  lastV7Random = randomTail
+  return { timestamp: monotonicTimestamp, randomTail }
 }
 
 function bytesToUuid(bytes: Uint8Array, { uppercase, hyphens }: UuidFormatOptions) {
@@ -52,16 +93,22 @@ export function generateUuidV4(options: UuidFormatOptions): string {
 }
 
 export function generateUuidV7(options: UuidFormatOptions, timestamp = Date.now()): string {
-  const bytes = getRandomBytes(16)
-  let value = timestamp
+  const bytes = new Uint8Array(16)
+  const monotonicValues = getMonotonicV7Values(Math.floor(timestamp))
+  let value = monotonicValues.timestamp
 
   for (let index = 5; index >= 0; index -= 1) {
     bytes[index] = value % 256
     value = Math.floor(value / 256)
   }
 
-  bytes[6] = (bytes[6] & 0x0f) | 0x70
-  bytes[8] = (bytes[8] & 0x3f) | 0x80
+  bytes[6] = 0x70 | Number((monotonicValues.randomTail >> 70n) & 0x0fn)
+  bytes[7] = Number((monotonicValues.randomTail >> 62n) & 0xffn)
+  bytes[8] = 0x80 | Number((monotonicValues.randomTail >> 56n) & 0x3fn)
+  for (let index = 9; index < 16; index += 1) {
+    const shift = BigInt((15 - index) * 8)
+    bytes[index] = Number((monotonicValues.randomTail >> shift) & 0xffn)
+  }
   return bytesToUuid(bytes, options)
 }
 

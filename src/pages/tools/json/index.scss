@@ -4,22 +4,9 @@
   display: flex;
   flex-direction: column;
   height: calc(100vh - 120px); // 适配页面剩余高度
-}
 
-.tool-header {
-  margin-bottom: 24px;
-
-  .tool-title {
-    margin: 0 0 8px 0;
-    font-size: 1.75rem;
-    font-weight: 700;
-    color: theme-var(text);
-  }
-
-  .tool-desc {
-    margin: 0;
-    color: theme-var(text-secondary);
-    font-size: 1rem;
+  .tool-page-header {
+    margin-bottom: 24px;
   }
 }
 
@@ -34,8 +21,6 @@
 .json-card {
   display: flex;
   flex-direction: column;
-  background-color: theme-var(surface) !important;
-  border-radius: $radius-lg !important;
 
   .ant-card-body {
     flex: 1;

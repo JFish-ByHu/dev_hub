@@ -1,4 +1,5 @@
-import { Card, Empty, Tag, Typography } from "antd"
+import { Empty, Tag, Typography } from "antd"
+import ToolCard from "../../../../components/tool/ToolCard"
 import type { UrlDetails } from "../utils/url"
 
 const { Text } = Typography
@@ -9,7 +10,7 @@ interface UrlDetailsCardProps {
 
 export default function UrlDetailsCard({ details }: UrlDetailsCardProps) {
   return (
-    <Card
+    <ToolCard
       title="URL Inspector"
       extra={<Tag color="blue">Absolute URLs</Tag>}
       className="url-details-card"
@@ -48,6 +49,6 @@ export default function UrlDetailsCard({ details }: UrlDetailsCardProps) {
           description="Enter an absolute URL to inspect its parts"
         />
       )}
-    </Card>
+    </ToolCard>
   )
 }

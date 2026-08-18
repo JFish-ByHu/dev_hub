@@ -40,6 +40,9 @@ export const DEFAULT_REGEX_FLAGS: RegexFlags = {
 
 export const DEFAULT_REGEX_PATTERN = String.raw`\b[A-Za-z]+\b`
 export const DEFAULT_REGEX_TEXT = "DevHub makes regex testing easier."
+export const MAX_REGEX_PATTERN_CHARACTERS = 2_000
+export const MAX_REGEX_TEST_CHARACTERS = 200_000
+export const MAX_REGEX_REPLACEMENT_CHARACTERS = 50_000
 
 export const REGEX_FLAG_OPTIONS: Array<{
   key: RegexFlagKey
@@ -138,6 +141,27 @@ export function analyzeRegex(
 ): RegexAnalysis {
   if (!pattern.trim()) {
     return { kind: "empty", message: "Enter a regular expression to start testing." }
+  }
+
+  if (pattern.length > MAX_REGEX_PATTERN_CHARACTERS) {
+    return {
+      kind: "error",
+      message: `Regular expressions are limited to ${MAX_REGEX_PATTERN_CHARACTERS.toLocaleString()} characters.`
+    }
+  }
+
+  if (testText.length > MAX_REGEX_TEST_CHARACTERS) {
+    return {
+      kind: "error",
+      message: `Test text is limited to ${MAX_REGEX_TEST_CHARACTERS.toLocaleString()} characters.`
+    }
+  }
+
+  if (replacement.length > MAX_REGEX_REPLACEMENT_CHARACTERS) {
+    return {
+      kind: "error",
+      message: `Replacement text is limited to ${MAX_REGEX_REPLACEMENT_CHARACTERS.toLocaleString()} characters.`
+    }
   }
 
   const flagText = flagsToString(flags)

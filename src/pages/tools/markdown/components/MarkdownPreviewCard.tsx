@@ -1,4 +1,5 @@
-import { Card, Empty, Typography } from "antd"
+import { Empty, Typography } from "antd"
+import ToolCard from "../../../../components/tool/ToolCard"
 import { defaultSchema } from "hast-util-sanitize"
 import type { RefObject } from "react"
 import ReactMarkdown, { defaultUrlTransform } from "react-markdown"
@@ -38,7 +39,7 @@ export default function MarkdownPreviewCard({
   onScroll
 }: MarkdownPreviewCardProps) {
   return (
-    <Card
+    <ToolCard
       title="Live preview"
       extra={<Text type="secondary">GFM · Sanitized</Text>}
       className="markdown-card markdown-preview-card"
@@ -60,6 +61,6 @@ export default function MarkdownPreviewCard({
           description="Start writing Markdown to see a preview."
         />
       )}
-    </Card>
+    </ToolCard>
   )
 }

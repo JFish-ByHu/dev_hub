@@ -1,4 +1,5 @@
-import { Button, Card, Input, message, Space, Switch, Typography, Upload } from "antd"
+import { Button, Input, message, Space, Switch, Typography, Upload } from "antd"
+import ToolCard from "../../../../components/tool/ToolCard"
 import {
   BulbOutlined,
   ClearOutlined,
@@ -11,6 +12,7 @@ import { useState } from "react"
 import type { RefObject } from "react"
 import type { TextAreaRef } from "antd/es/input/TextArea"
 import CopyButton from "../../../../components/CopyButton"
+import { MAX_TOOL_FILE_SIZE } from "../../../../utils/download"
 import {
   downloadMarkdown,
   expandMarkdownAssets,
@@ -63,7 +65,7 @@ export default function MarkdownEditorCard({
       return
     }
 
-    if (file.size > 10 * 1024 * 1024) {
+    if (file.size > MAX_TOOL_FILE_SIZE) {
       message.error("Markdown files must be smaller than 10 MB.")
       return
     }
@@ -84,7 +86,7 @@ export default function MarkdownEditorCard({
       return
     }
 
-    if (file.size > 10 * 1024 * 1024) {
+    if (file.size > MAX_TOOL_FILE_SIZE) {
       message.error("Images must be smaller than 10 MB.")
       return
     }
@@ -138,7 +140,11 @@ export default function MarkdownEditorCard({
   }
 
   return (
-    <Card title="Markdown input" className="markdown-card markdown-editor-card" bordered={false}>
+    <ToolCard
+      title="Markdown input"
+      className="markdown-card markdown-editor-card"
+      bordered={false}
+    >
       <div className="markdown-toolbar">
         <Space className="markdown-toolbar-group" wrap>
           <Button icon={<BulbOutlined />} onClick={onExample}>
@@ -226,6 +232,6 @@ export default function MarkdownEditorCard({
         <Text type="secondary">{stats.lines.toLocaleString()} lines</Text>
         <Text type="secondary">{stats.bytes.toLocaleString()} bytes</Text>
       </div>
-    </Card>
+    </ToolCard>
   )
 }

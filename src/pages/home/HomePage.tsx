@@ -1,6 +1,7 @@
 import React from "react"
 import { Button } from "antd"
 import { useNavigate } from "react-router-dom"
+import { TOOLS_CONFIG } from "../../config/tools"
 import "./HomePage.scss"
 
 const HomePage: React.FC = () => {
@@ -22,10 +23,16 @@ const HomePage: React.FC = () => {
             Use our fast, all-in-one developer tools to realize your ideas.
           </p>
           <div className="hero-actions">
-            <Button size="large" className="btn-secondary">
+            <Button
+              size="large"
+              className="btn-secondary"
+              onClick={() =>
+                document.getElementById("home-steps")?.scrollIntoView({ behavior: "smooth" })
+              }
+            >
               How does it work?
             </Button>
-            <Button size="large" type="primary" onClick={() => navigate("/features")}>
+            <Button size="large" type="primary" onClick={() => navigate("/tools")}>
               Get Started
             </Button>
           </div>
@@ -83,7 +90,7 @@ const HomePage: React.FC = () => {
       <section className="banners-section">
         <div className="banner-grid">
           <div className="banner-large primary-bg">
-            <h2>15+ Native Tools</h2>
+            <h2>{TOOLS_CONFIG.length} Local Tools</h2>
             <p>and counting...</p>
           </div>
           <div className="banner-square accent-bg">
@@ -91,18 +98,18 @@ const HomePage: React.FC = () => {
             <p>Forever.</p>
           </div>
           <div className="banner-rect dark-bg">
-            <h2>All Local Support</h2>
-            <a href="#github">Check out our repo</a>
+            <h2>All Local Processing</h2>
+            <p>Your data stays in your browser</p>
           </div>
           <div className="banner-rect error-bg">
-            <h2>200+ Weekly Active</h2>
-            <a href="#reviews">Leave a review</a>
+            <h2>Built for Daily Work</h2>
+            <p>Copy, download, and move on</p>
           </div>
         </div>
       </section>
 
       {/* 4. Steps Section */}
-      <section className="steps-section">
+      <section id="home-steps" className="steps-section">
         <div className="steps-left">
           <h2>How Does it Work?</h2>
           <p>Get your tasks done in 4 simple steps.</p>

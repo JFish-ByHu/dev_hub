@@ -1,4 +1,5 @@
-import { Alert, Button, Card, Divider, Input, Select, Tag, Typography } from "antd"
+import { Alert, Button, Divider, Input, Select, Tag, Typography } from "antd"
+import ToolCard from "../../../../components/tool/ToolCard"
 import { CheckCircleOutlined, ThunderboltOutlined } from "@ant-design/icons"
 import {
   TIMESTAMP_UNIT_OPTIONS,
@@ -33,7 +34,7 @@ export default function DateToTimestampCard({
   onUseCurrent
 }: DateToTimestampCardProps) {
   return (
-    <Card
+    <ToolCard
       title="Date & Time → Timestamp"
       extra={<Tag color="cyan">Calendar date</Tag>}
       className="timestamp-card"
@@ -100,6 +101,6 @@ export default function DateToTimestampCard({
           showIcon
         />
       )}
-    </Card>
+    </ToolCard>
   )
 }

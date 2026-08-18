@@ -1,5 +1,6 @@
 import { Tag } from "antd"
 import { CalculatorOutlined } from "@ant-design/icons"
+import ToolPageHeader from "../../../components/tool/ToolPageHeader"
 import BaseConvertGuide from "./components/BaseConvertGuide"
 import BaseConvertInputCard from "./components/BaseConvertInputCard"
 import BaseConvertOptions from "./components/BaseConvertOptions"
@@ -12,18 +13,15 @@ export default function BaseConvertTool() {
 
   return (
     <div className="base-convert-tool-page">
-      <div className="tool-header">
-        <div>
-          <h1 className="tool-title">Base Converter</h1>
-          <p className="tool-desc">
-            Convert exact integer values between binary, octal, decimal, and hexadecimal
-            representations.
-          </p>
-        </div>
-        <Tag icon={<CalculatorOutlined />} color="blue">
-          Arbitrary-precision integers
-        </Tag>
-      </div>
+      <ToolPageHeader
+        title="Base Converter"
+        description="Convert exact integer values between binary, octal, decimal, and hexadecimal representations."
+        extra={
+          <Tag icon={<CalculatorOutlined />} color="blue">
+            Arbitrary-precision integers
+          </Tag>
+        }
+      />
 
       <BaseConvertOptions
         sourceRadix={converter.sourceRadix}

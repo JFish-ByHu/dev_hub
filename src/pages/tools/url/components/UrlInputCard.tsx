@@ -1,4 +1,5 @@
-import { Button, Card, Input, Space, Tag, Typography } from "antd"
+import { Button, Input, Space, Tag, Typography } from "antd"
+import ToolCard from "../../../../components/tool/ToolCard"
 import { ClearOutlined, CodeOutlined, SwapOutlined } from "@ant-design/icons"
 import type { UrlOperation } from "../utils/url"
 import type { UrlStats } from "../utils/url"
@@ -28,7 +29,7 @@ export default function UrlInputCard({
   canSwap
 }: UrlInputCardProps) {
   return (
-    <Card
+    <ToolCard
       title={operation === "encode" ? "Raw URL or Text" : "Encoded URL"}
       extra={
         <Tag color={operation === "encode" ? "purple" : "cyan"}>
@@ -66,6 +67,6 @@ export default function UrlInputCard({
           <Text type="secondary">{stats.bytes.toLocaleString()} bytes</Text>
         </div>
       </div>
-    </Card>
+    </ToolCard>
   )
 }

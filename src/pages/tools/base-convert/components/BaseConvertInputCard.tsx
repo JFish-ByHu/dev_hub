@@ -1,4 +1,5 @@
-import { Button, Card, Input, Space, Tag, Typography } from "antd"
+import { Button, Input, Space, Tag, Typography } from "antd"
+import ToolCard from "../../../../components/tool/ToolCard"
 import { ClearOutlined, CodeOutlined } from "@ant-design/icons"
 import type { Radix } from "../utils/baseConvert"
 
@@ -21,7 +22,7 @@ export default function BaseConvertInputCard({
   onClear
 }: BaseConvertInputCardProps) {
   return (
-    <Card
+    <ToolCard
       title="Number Input"
       extra={<Tag color="purple">Base {sourceRadix}</Tag>}
       className="base-convert-card"
@@ -46,6 +47,6 @@ export default function BaseConvertInputCard({
         </Space>
         <Text type="secondary">Spaces, underscores, and matching prefixes are accepted.</Text>
       </div>
-    </Card>
+    </ToolCard>
   )
 }

@@ -1,3 +1,5 @@
+import { downloadFile } from "../../../../utils/download"
+
 export const MARKDOWN_EXAMPLE = `# DevHub Markdown Preview
 
 Write **Markdown** on the left and see a safe, live preview on the right.
@@ -52,13 +54,9 @@ export function expandMarkdownAssets(value: string, assets: MarkdownAssetMap) {
 }
 
 export function downloadMarkdown(value: string, assets: MarkdownAssetMap = {}) {
-  const blob = new Blob([expandMarkdownAssets(value, assets)], {
-    type: "text/markdown;charset=utf-8"
-  })
-  const url = URL.createObjectURL(blob)
-  const anchor = document.createElement("a")
-  anchor.href = url
-  anchor.download = "devhub-document.md"
-  anchor.click()
-  URL.revokeObjectURL(url)
+  downloadFile(
+    expandMarkdownAssets(value, assets),
+    "devhub-document.md",
+    "text/markdown;charset=utf-8"
+  )
 }

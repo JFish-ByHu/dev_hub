@@ -1,4 +1,5 @@
-import { Card, Divider, Tag, Typography } from "antd"
+import { Divider, Tag, Typography } from "antd"
+import ToolCard from "../../../../components/tool/ToolCard"
 import CopyButton from "../../../../components/CopyButton"
 import { formatHex, formatHsl, formatRgb, type RgbaColor } from "../utils/color"
 
@@ -20,7 +21,7 @@ export default function ColorValuesCard({ label, color, input }: ColorValuesCard
     : []
 
   return (
-    <Card
+    <ToolCard
       title={`${label} conversion`}
       extra={
         color ? (
@@ -65,6 +66,6 @@ export default function ColorValuesCard({ label, color, input }: ColorValuesCard
           </div>
         </>
       )}
-    </Card>
+    </ToolCard>
   )
 }

@@ -1,35 +1,14 @@
 import { Input, Tag, Typography } from "antd"
 import { SearchOutlined } from "@ant-design/icons"
-import { useMemo, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { TOOLS_CONFIG } from "../../config/tools"
+import { useToolCatalogSearch } from "../../hooks/useToolCatalogSearch"
 import "./index.scss"
 
 const { Text } = Typography
 
 export default function ToolsIndexPage() {
   const navigate = useNavigate()
-  const [query, setQuery] = useState("")
-
-  const groups = useMemo(() => {
-    const normalizedQuery = query.trim().toLowerCase()
-    const grouped = new Map<string, typeof TOOLS_CONFIG>()
-
-    TOOLS_CONFIG.forEach((tool) => {
-      const searchableText =
-        `${tool.title} ${tool.description} ${tool.category ?? ""}`.toLowerCase()
-      if (normalizedQuery && !searchableText.includes(normalizedQuery)) return
-
-      const category = tool.category ?? "Other"
-      const tools = grouped.get(category) ?? []
-      tools.push(tool)
-      grouped.set(category, tools)
-    })
-
-    return Array.from(grouped.entries())
-  }, [query])
-
-  const visibleCount = groups.reduce((total, [, tools]) => total + tools.length, 0)
+  const { query, setQuery, groups, visibleCount, totalCount } = useToolCatalogSearch()
 
   return (
     <div className="tools-index-page">
@@ -39,7 +18,7 @@ export default function ToolsIndexPage() {
           <h1>All developer tools</h1>
           <p>Browse the complete toolkit by category or search for a specific workflow.</p>
         </div>
-        <Tag color="blue">{TOOLS_CONFIG.length} tools</Tag>
+        <Tag color="blue">{totalCount} tools</Tag>
       </div>
 
       <div className="tools-index-toolbar">

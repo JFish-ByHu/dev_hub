@@ -1,4 +1,5 @@
-import { Button, Card, Input, Select, Space, Typography } from "antd"
+import { Button, Input, Select, Space, Typography } from "antd"
+import ToolCard from "../../../../components/tool/ToolCard"
 import { ClearOutlined, SwapOutlined } from "@ant-design/icons"
 import { COLOR_PRESETS } from "../utils/color"
 
@@ -66,7 +67,7 @@ export default function ColorInputCard({
   const backgroundPicker = /^#[\da-f]{6}$/i.test(background) ? background : "#ffffff"
 
   return (
-    <Card title="Color inputs" className="color-card color-input-card" bordered={false}>
+    <ToolCard title="Color inputs" className="color-card color-input-card" bordered={false}>
       <div className="color-input-grid">
         <ColorField
           label="Foreground color"
@@ -108,6 +109,6 @@ export default function ColorInputCard({
         </Space>
         <Text type="secondary">Contrast is calculated using WCAG 2.x relative luminance.</Text>
       </div>
-    </Card>
+    </ToolCard>
   )
 }

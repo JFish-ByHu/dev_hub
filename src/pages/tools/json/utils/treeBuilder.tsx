@@ -1,63 +1,30 @@
 import type { DataNode } from "antd/es/tree"
+import type { JsonTreeNode } from "./jsonTree"
 
-const appendObjectPath = (currentPath: string, key: string) =>
-  /^[A-Za-z_$][\w$]*$/.test(key)
-    ? `${currentPath}.${key}`
-    : `${currentPath}[${JSON.stringify(key)}]`
+function renderNodeTitle(node: JsonTreeNode) {
+  const isContainer = node.type === "array" || node.type === "object"
+  const metaInfo = isContainer
+    ? `${node.type === "array" ? "Array" : "Object"} ${node.type === "array" ? `[${node.size ?? 0}]` : `{${node.size ?? 0}}`}${node.truncated ? " · truncated" : ""}`
+    : undefined
 
-export const buildTree = (obj: unknown, currentPath = "root", name = "root"): DataNode => {
-  const isArray = Array.isArray(obj)
-  const isObject = obj !== null && typeof obj === "object" && !isArray
-
-  // 格式化不同类型的数值显示
-  const renderNodeTitle = (keyName: string, valueType: string, metaInfo?: string) => (
+  return (
     <span className="json-tree-node">
-      <span className="json-key">{JSON.stringify(keyName)}</span>:{" "}
+      <span className="json-key">{JSON.stringify(node.name)}</span>:{" "}
       {metaInfo ? (
         <span className="json-meta">{metaInfo}</span>
       ) : (
-        <span className={`json-val-${valueType}`}>{String(obj)}</span>
+        <span className={`json-val-${node.type}`}>{node.value}</span>
       )}
     </span>
   )
+}
 
-  if (isArray) {
-    return {
-      key: currentPath,
-      title: renderNodeTitle(name, "array", `Array [${obj.length}]`),
-      children: obj.map((item: unknown, index: number) =>
-        buildTree(item, `${currentPath}[${index}]`, `${index}`)
-      )
-    }
-  }
-
-  if (isObject) {
-    const record = obj as Record<string, unknown>
-    const keys = Object.keys(record)
-    return {
-      key: currentPath,
-      title: renderNodeTitle(name, "object", `Object {${keys.length}}`),
-      children: keys.map((k) => buildTree(record[k], appendObjectPath(currentPath, k), k))
-    }
-  }
-
-  // 基础类型处理
-  let valType = typeof obj as string
-  let displayObj = obj
-  if (obj === null) valType = "null"
-  else if (valType === "string") displayObj = `"${obj}"`
-
-  // 对于非对象/数组类型，用 displayObj 重新包装 render
-  const renderLeafTitle = (keyName: string, valueType: string) => (
-    <span className="json-tree-node">
-      <span className="json-key">{JSON.stringify(keyName)}</span>:{" "}
-      <span className={`json-val-${valueType}`}>{String(displayObj)}</span>
-    </span>
-  )
-
+export function buildTree(node: JsonTreeNode): DataNode {
+  const children = node.children?.map(buildTree)
   return {
-    key: currentPath,
-    title: renderLeafTitle(name, valType),
-    isLeaf: true
+    key: node.key,
+    title: renderNodeTitle(node),
+    isLeaf: !children?.length,
+    ...(children?.length ? { children } : {})
   }
 }

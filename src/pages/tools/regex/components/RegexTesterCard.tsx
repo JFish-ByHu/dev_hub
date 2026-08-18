@@ -1,4 +1,5 @@
-import { Card, Input, Typography } from "antd"
+import { Input, Typography } from "antd"
+import ToolCard from "../../../../components/tool/ToolCard"
 
 const { TextArea } = Input
 const { Text } = Typography
@@ -17,7 +18,7 @@ export default function RegexTesterCard({
   onReplacementChange
 }: RegexTesterCardProps) {
   return (
-    <Card title="Test input" className="regex-card regex-tester-card" bordered={false}>
+    <ToolCard title="Test input" className="regex-card regex-tester-card" bordered={false}>
       <div className="regex-field-group">
         <Text type="secondary">Sample text</Text>
         <TextArea
@@ -43,6 +44,6 @@ export default function RegexTesterCard({
           <code>$&lt;name&gt;</code>.
         </Text>
       </div>
-    </Card>
+    </ToolCard>
   )
 }

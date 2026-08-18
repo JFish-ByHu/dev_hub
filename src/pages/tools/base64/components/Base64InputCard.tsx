@@ -1,5 +1,6 @@
 import { useState } from "react"
-import { Button, Card, Input, Tag, Typography, Upload } from "antd"
+import { Button, Input, Tag, Typography, Upload } from "antd"
+import ToolCard from "../../../../components/tool/ToolCard"
 import { ClearOutlined, FileTextOutlined, SwapOutlined, UploadOutlined } from "@ant-design/icons"
 import type { ConversionMode } from "../hooks/useBase64Conversion"
 
@@ -37,7 +38,7 @@ export default function Base64InputCard({
   }
 
   return (
-    <Card
+    <ToolCard
       title={mode === "encode" ? "Text or File Input" : "Base64 Input"}
       extra={
         <Tag color={mode === "encode" ? "purple" : "cyan"}>
@@ -107,6 +108,6 @@ export default function Base64InputCard({
           ? "Text is encoded as UTF-8. Files are read locally and never uploaded."
           : "Both standard Base64 and Base64URL values are accepted, with or without padding."}
       </Text>
-    </Card>
+    </ToolCard>
   )
 }
