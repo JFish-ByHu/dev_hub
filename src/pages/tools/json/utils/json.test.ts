@@ -23,4 +23,26 @@ describe("JSON analysis", () => {
       expect(result.formatted).toContain("1")
     }
   })
+
+  it("preserves nested JSON strings by default", () => {
+    const result = analyzeJson('{"summaryContent":"[{\\"type\\":\\"count\\"}]"}')
+
+    expect(result.kind).toBe("success")
+    if (result.kind === "success") {
+      expect(result.formatted).toContain('"summaryContent": "[{\\"type\\":\\"count\\"}]"')
+      expect(result.tree.children?.[0]?.type).toBe("string")
+    }
+  })
+
+  it("expands nested JSON strings when enabled", () => {
+    const result = analyzeJson('{"summaryContent":"[{\\"type\\":\\"count\\"}]"}', {
+      parseNestedJsonStrings: true
+    })
+
+    expect(result.kind).toBe("success")
+    if (result.kind === "success") {
+      expect(result.formatted).toContain('"type": "count"')
+      expect(result.tree.children?.[0]?.type).toBe("array")
+    }
+  })
 })

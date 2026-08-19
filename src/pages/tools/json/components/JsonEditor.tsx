@@ -1,6 +1,6 @@
 import { useState } from "react"
 import type { DragEvent } from "react"
-import { Button, Space, Typography, Upload, Input } from "antd"
+import { Button, Input, Space, Switch, Typography, Upload } from "antd"
 import ToolCard from "../../../../components/tool/ToolCard"
 import {
   BulbOutlined,
@@ -33,6 +33,8 @@ interface JsonEditorProps {
   onLoadExample: () => void
   onClear: () => void
   onFile: (file: File) => Promise<void>
+  parseNestedJsonStrings: boolean
+  onParseNestedJsonStringsChange: (value: boolean) => void
 }
 
 export default function JsonEditor({
@@ -46,7 +48,9 @@ export default function JsonEditor({
   onDownload,
   onLoadExample,
   onClear,
-  onFile
+  onFile,
+  parseNestedJsonStrings,
+  onParseNestedJsonStringsChange
 }: JsonEditorProps) {
   const [isDragging, setIsDragging] = useState(false)
 
@@ -88,6 +92,14 @@ export default function JsonEditor({
         <Button icon={<BulbOutlined />} onClick={onLoadExample}>
           Example
         </Button>
+        <span className="json-nested-json-control">
+          <Switch
+            size="small"
+            checked={parseNestedJsonStrings}
+            onChange={onParseNestedJsonStringsChange}
+          />
+          <Text type="secondary">Expand nested JSON</Text>
+        </span>
         <Button danger icon={<ClearOutlined />} onClick={onClear} disabled={!inputVal}>
           Clear
         </Button>

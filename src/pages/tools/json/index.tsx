@@ -27,6 +27,8 @@ export default function JsonTool() {
           onLoadExample={json.loadExample}
           onClear={json.clearJson}
           onFile={json.processFile}
+          parseNestedJsonStrings={json.parseNestedJsonStrings}
+          onParseNestedJsonStringsChange={json.setParseNestedJsonStrings}
         />
         <JsonViewer analysis={json.analysis} isParsing={json.isParsing} />
       </div>

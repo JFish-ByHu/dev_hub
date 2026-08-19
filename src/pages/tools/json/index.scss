@@ -87,6 +87,14 @@
   font-size: 12px;
 }
 
+.json-nested-json-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: theme-var(text-secondary);
+  white-space: nowrap;
+}
+
 // ------------------------------
 // 右侧：树视图 & 路径提取
 // ------------------------------

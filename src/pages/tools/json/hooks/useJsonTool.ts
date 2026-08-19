@@ -22,9 +22,18 @@ const JSON_TIMEOUT_ERROR: JsonAnalysis = {
 
 export function useJsonTool() {
   const [inputVal, setInputVal] = useState("")
-  const workerInput =
-    inputVal.trim() && inputVal.length <= MAX_JSON_INPUT_CHARACTERS ? inputVal : null
-  const { data: workerAnalysis, isPending } = useDebouncedWorkerTask<string, JsonAnalysis>({
+  const [parseNestedJsonStrings, setParseNestedJsonStrings] = useState(false)
+  const workerInput = useMemo(
+    () =>
+      inputVal.trim() && inputVal.length <= MAX_JSON_INPUT_CHARACTERS
+        ? { value: inputVal, parseNestedJsonStrings }
+        : null,
+    [inputVal, parseNestedJsonStrings]
+  )
+  const { data: workerAnalysis, isPending } = useDebouncedWorkerTask<
+    NonNullable<typeof workerInput>,
+    JsonAnalysis
+  >({
     input: workerInput,
     workerUrl: JSON_WORKER_URL,
     timeout: 2000,
@@ -105,6 +114,8 @@ export function useJsonTool() {
     minifyJson,
     downloadJson,
     loadExample,
-    clearJson
+    clearJson,
+    parseNestedJsonStrings,
+    setParseNestedJsonStrings
   }
 }

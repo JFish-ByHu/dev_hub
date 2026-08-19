@@ -41,6 +41,10 @@ export type JsonAnalysis =
       treeMeta: JsonTreeMeta
     }
 
+export interface JsonAnalyzeOptions {
+  parseNestedJsonStrings?: boolean
+}
+
 export function parseJson(value: string): JsonParseResult {
   if (!value.trim()) {
     return { ok: false, error: "Enter JSON data to validate." }
@@ -56,7 +60,33 @@ export function parseJson(value: string): JsonParseResult {
   }
 }
 
-export function analyzeJson(value: string): JsonAnalysis {
+function parseNestedJsonStrings(value: unknown, depth = 0): unknown {
+  if (depth >= 8) return value
+
+  if (Array.isArray(value)) {
+    return value.map((item) => parseNestedJsonStrings(item, depth + 1))
+  }
+
+  if (value && typeof value === "object") {
+    return Object.fromEntries(
+      Object.entries(value).map(([key, item]) => [key, parseNestedJsonStrings(item, depth + 1)])
+    )
+  }
+
+  if (typeof value !== "string") return value
+  const trimmed = value.trim()
+  if (!(trimmed.startsWith("{") || trimmed.startsWith("["))) return value
+
+  try {
+    const parsed = JSON.parse(trimmed)
+    if (!parsed || typeof parsed !== "object") return value
+    return parseNestedJsonStrings(parsed, depth + 1)
+  } catch {
+    return value
+  }
+}
+
+export function analyzeJson(value: string, options: JsonAnalyzeOptions = {}): JsonAnalysis {
   if (!value.trim()) return { kind: "empty" }
   if (value.length > MAX_JSON_INPUT_CHARACTERS) {
     return {
@@ -68,11 +98,12 @@ export function analyzeJson(value: string): JsonAnalysis {
   const parsed = parseJson(value)
   if (!parsed.ok) return { kind: "error", error: parsed.error }
 
-  const tree = buildJsonTree(parsed.data)
+  const data = options.parseNestedJsonStrings ? parseNestedJsonStrings(parsed.data) : parsed.data
+  const tree = buildJsonTree(data)
   return {
     kind: "success",
-    formatted: serializeJson(parsed.data, true),
-    minified: serializeJson(parsed.data, false),
+    formatted: serializeJson(data, true),
+    minified: serializeJson(data, false),
     tree: tree.root,
     treeMeta: tree.meta
   }
