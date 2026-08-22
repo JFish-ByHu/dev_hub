@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 
 export interface UseDebouncedWorkerTaskOptions<TInput, TOutput> {
   input: TInput | null
-  workerUrl: URL
+  createWorker: () => Worker
   initialData?: TOutput | null
   delay?: number
   timeout?: number
@@ -12,7 +12,7 @@ export interface UseDebouncedWorkerTaskOptions<TInput, TOutput> {
 
 export function useDebouncedWorkerTask<TInput, TOutput>({
   input,
-  workerUrl,
+  createWorker,
   initialData = null,
   delay = 180,
   timeout = 2000,
@@ -47,7 +47,7 @@ export function useDebouncedWorkerTask<TInput, TOutput>({
 
       setIsTaskPending(true)
       try {
-        worker = new Worker(workerUrl, { type: "module" })
+        worker = createWorker()
         worker.onmessage = (event: MessageEvent<TOutput>) => finish(event.data)
         worker.onerror = () => finish(workerError)
         timeoutId = window.setTimeout(() => finish(timeoutError), timeout)
@@ -63,7 +63,7 @@ export function useDebouncedWorkerTask<TInput, TOutput>({
       if (timeoutId !== undefined) window.clearTimeout(timeoutId)
       worker?.terminate()
     }
-  }, [delay, input, timeout, timeoutError, workerError, workerUrl])
+  }, [createWorker, delay, input, timeout, timeoutError, workerError])
 
   return { data, isPending: input !== null && isTaskPending }
 }

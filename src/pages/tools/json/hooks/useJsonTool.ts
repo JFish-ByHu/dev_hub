@@ -10,7 +10,8 @@ import {
 import { downloadFile, MAX_TOOL_FILE_SIZE } from "../../../../utils/download"
 
 const EMPTY_ANALYSIS: JsonAnalysis = { kind: "empty" }
-const JSON_WORKER_URL = new URL("../workers/jsonWorker.ts", import.meta.url)
+const createJsonWorker = () =>
+  new Worker(new URL("../workers/jsonWorker.ts", import.meta.url), { type: "module" })
 const JSON_WORKER_ERROR: JsonAnalysis = {
   kind: "error",
   error: "The JSON worker could not finish parsing this input."
@@ -35,7 +36,7 @@ export function useJsonTool() {
     JsonAnalysis
   >({
     input: workerInput,
-    workerUrl: JSON_WORKER_URL,
+    createWorker: createJsonWorker,
     timeout: 2000,
     workerError: JSON_WORKER_ERROR,
     timeoutError: JSON_TIMEOUT_ERROR

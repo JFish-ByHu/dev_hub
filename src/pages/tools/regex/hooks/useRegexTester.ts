@@ -12,7 +12,8 @@ import {
   type RegexPreset
 } from "../utils/regex"
 
-const REGEX_WORKER_URL = new URL("../workers/regexWorker.ts", import.meta.url)
+const createRegexWorker = () =>
+  new Worker(new URL("../workers/regexWorker.ts", import.meta.url), { type: "module" })
 const REGEX_WORKER_ERROR: RegexAnalysis = {
   kind: "error",
   message: "The regular expression could not be evaluated."
@@ -42,7 +43,7 @@ export function useRegexTester() {
     RegexAnalysis
   >({
     input: workerInput,
-    workerUrl: REGEX_WORKER_URL,
+    createWorker: createRegexWorker,
     initialData: initialAnalysis,
     timeout: 1200,
     workerError: REGEX_WORKER_ERROR,
